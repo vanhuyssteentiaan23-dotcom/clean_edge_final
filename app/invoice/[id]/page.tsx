@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getInvoice, OrderRecord } from "../../../../../lib/cleanedge-order";
+import { getInvoice, OrderRecord } from "../../../lib/cleanedge-order";
 
 export const dynamic = "force-dynamic";
 
