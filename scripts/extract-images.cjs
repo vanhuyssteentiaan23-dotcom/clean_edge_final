@@ -12,6 +12,13 @@ if (!fs.existsSync(zipPath)) {
 
 fs.mkdirSync(outDir, { recursive: true });
 
+const carWashSource = path.join(root, "CleanEdge_car-wash-kit.jpg");
+const carWashTarget = path.join(outDir, "car-wash-kit.jpg");
+if (fs.existsSync(carWashSource)) {
+  fs.copyFileSync(carWashSource, carWashTarget);
+  console.log("Copied car wash kit image");
+}
+
 const zip = new AdmZip(zipPath);
 const allowed = new Set([
   "microfiber-5.jpg",
