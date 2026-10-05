@@ -85,7 +85,7 @@ export default function Home() {
       <div className="topbar">Professional detailing essentials · built for the garage</div>
       <nav className="nav shell">
         <div className="logo">CLEAN<span>EDGE</span></div>
-        <div className="navlinks"><a href="#shop">Shop</a><a href="#about">About</a></div>
+        <div className="navlinks"><a href="#shop">Shop</a><a href="#about">About</a><a href="/terms">T&amp;C</a></div>
         <button className="cart" onClick={() => setCartOpen(true)}>Cart <b>{cartCount}</b></button>
       </nav>
 
@@ -122,9 +122,21 @@ export default function Home() {
       </section>
 
       <section id="about" className="about">
-        <div className="shell sectionhead"><div><div className="eyebrow">CleanEdge</div><h2>Rugged. Simple. Focused.</h2></div></div>
+        <div className="shell aboutGrid">
+          <div>
+            <div className="eyebrow">About CleanEdge</div>
+            <h2>Built for the finish.</h2>
+          </div>
+          <div className="aboutCopy">
+            <p>CleanEdge supplies practical automotive detailing essentials for everyday car care, from microfiber cloths and brushes to drying towels and garage-ready accessories.</p>
+            <p>We keep the range focused on useful products, straightforward pricing and a simple checkout experience.</p>
+          </div>
+        </div>
       </section>
-      <footer className="shell">© 2026 CleanEdge · Automotive detailing supplies</footer>
+      <footer className="shell footer">
+        <div>© 2026 CleanEdge · Automotive detailing supplies</div>
+        <div className="footerLinks"><a href="/terms">Terms &amp; Conditions</a><a href="/cookies">Cookie Policy</a></div>
+      </footer>
 
       {cartOpen && (
         <div className="cartBackdrop" onClick={() => setCartOpen(false)}>
