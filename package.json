@@ -1,6 +1,7 @@
 {
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/extract-images.cjs",
     "build": "next build",
     "start": "next start"
   },
@@ -11,6 +12,7 @@
   },
   "devDependencies": {
     "typescript": "latest",
+    "adm-zip": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest"
