@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
-import { markEmailSent, markFailed, markPaid, OrderRecord } from "../../lib/cleanedge-order";
+import { markEmailSent, markFailed, markPaid, OrderRecord } from "../lib/cleanedge-order";
 
 function verifyYocoSignature(rawBody: string, headers: Headers, secret: string) {
   const webhookId = headers.get("webhook-id");
