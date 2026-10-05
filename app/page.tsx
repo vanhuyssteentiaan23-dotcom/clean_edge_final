@@ -18,6 +18,8 @@ const products = [
 ];
 
 const sellingPrice = (cost: number) => cost * 1.65;
+const STANDARD_SHIPPING = 60;
+const FREE_SHIPPING_THRESHOLD = 1500;
 
 export default function Home() {
   const [cart, setCart] = useState<Record<string, number>>({});
@@ -32,7 +34,9 @@ export default function Home() {
     [cart]
   );
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const cartTotal = cartItems.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
+  const cartSubtotal = cartItems.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
+  const shipping = cartSubtotal > FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
+  const cartTotal = cartSubtotal + shipping;
 
   const addToCart = (id: string) => {
     setCart((current) => ({ ...current, [id]: (current[id] || 0) + 1 }));
@@ -68,9 +72,7 @@ export default function Home() {
         }),
       });
       const data = await response.json();
-      if (!response.ok || !data.redirectUrl) {
-        throw new Error(data.error || "Unable to start checkout.");
-      }
+      if (!response.ok || !data.redirectUrl) throw new Error(data.error || "Unable to start checkout.");
       window.location.assign(data.redirectUrl);
     } catch (error) {
       setCheckoutError(error instanceof Error ? error.message : "Unable to start checkout.");
@@ -93,6 +95,7 @@ export default function Home() {
           <h1>Clean cars.<br/><em>Sharper edges.</em></h1>
           <p>Practical microfiber, brushes, drying towels, gloves and touch-up essentials for people who take the finish seriously.</p>
           <a className="cta" href="#shop">Shop the collection</a>
+          <div className="shippingBanner">STANDARD COURIER R60 <span>•</span> ORDERS OVER R1,500 SHIP FREE</div>
         </div>
       </header>
 
@@ -106,9 +109,7 @@ export default function Home() {
         <div className="grid">
           {products.map((p) => (
             <article className="card" key={p.id}>
-              <div className="photo">
-                <Image src={p.image} alt={p.name} fill sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" />
-              </div>
+              <div className="photo"><Image src={p.image} alt={p.name} fill sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" /></div>
               <div className="body">
                 <div className="qty">{p.qty}</div>
                 <h3>{p.name}</h3>
@@ -121,9 +122,7 @@ export default function Home() {
       </section>
 
       <section id="about" className="about">
-        <div className="shell sectionhead">
-          <div><div className="eyebrow">CleanEdge</div><h2>Rugged. Simple. Focused.</h2></div>
-        </div>
+        <div className="shell sectionhead"><div><div className="eyebrow">CleanEdge</div><h2>Rugged. Simple. Focused.</h2></div></div>
       </section>
       <footer className="shell">© 2026 CleanEdge · Automotive detailing supplies</footer>
 
@@ -135,9 +134,7 @@ export default function Home() {
               <button className="close" onClick={() => setCartOpen(false)} aria-label="Close cart">×</button>
             </div>
 
-            {cartItems.length === 0 ? (
-              <p className="emptyCart">Your cart is empty.</p>
-            ) : (
+            {cartItems.length === 0 ? <p className="emptyCart">Your cart is empty.</p> : (
               <>
                 <div className="cartItems">
                   {cartItems.map((item) => (
@@ -146,36 +143,25 @@ export default function Home() {
                       <div className="cartInfo">
                         <strong>{item.name}</strong>
                         <span>R {sellingPrice(item.cost).toFixed(2)} each</span>
-                        <div className="quantity">
-                          <button onClick={() => changeQuantity(item.id, -1)}>−</button>
-                          <b>{item.quantity}</b>
-                          <button onClick={() => changeQuantity(item.id, 1)}>+</button>
-                        </div>
+                        <div className="quantity"><button onClick={() => changeQuantity(item.id, -1)}>−</button><b>{item.quantity}</b><button onClick={() => changeQuantity(item.id, 1)}>+</button></div>
                       </div>
                       <div className="lineTotal">R {(sellingPrice(item.cost) * item.quantity).toFixed(2)}</div>
                     </div>
                   ))}
                 </div>
 
-                <div className="cartSummary">
-                  <span>Total</span>
-                  <strong>R {cartTotal.toFixed(2)}</strong>
-                </div>
+                <div className="cartSummary"><span>Subtotal</span><strong>R {cartSubtotal.toFixed(2)}</strong></div>
+                <div className="cartSummary"><span>Shipping</span><strong>{shipping === 0 ? "FREE" : `R ${shipping.toFixed(2)}`}</strong></div>
+                <div className="cartSummary cartGrandTotal"><span>Total</span><strong>R {cartTotal.toFixed(2)}</strong></div>
+                <p className="shippingNote">{shipping === 0 ? "Free shipping applied — your order is over R1,500." : "Standard courier: R60. Orders over R1,500 ship free."}</p>
+
                 <div className="customerFields">
-                  <label>
-                    Name <span>(optional)</span>
-                    <input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Your name" />
-                  </label>
-                  <label>
-                    Email <span>(required)</span>
-                    <input type="email" value={customerEmail} onChange={(event) => setCustomerEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" />
-                  </label>
+                  <label>Name <span>(optional)</span><input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Your name" /></label>
+                  <label>Email <span>(required)</span><input type="email" value={customerEmail} onChange={(event) => setCustomerEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" /></label>
                   <p>We’ll email your paid invoice and order details here.</p>
                 </div>
                 {checkoutError && <div className="checkoutError">{checkoutError}</div>}
-                <button className="checkout" onClick={checkout} disabled={checkingOut}>
-                  {checkingOut ? "Opening Yoco…" : "Checkout with Yoco"}
-                </button>
+                <button className="checkout" onClick={checkout} disabled={checkingOut}>{checkingOut ? "Opening Yoco…" : "Checkout with Yoco"}</button>
                 <p className="secureNote">Secure payment via Yoco · ZAR</p>
               </>
             )}
