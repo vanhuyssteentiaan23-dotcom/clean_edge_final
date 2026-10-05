@@ -39,11 +39,11 @@ export async function POST(request: Request) {
     if (!requested.length) return NextResponse.json({ error: "Your cart is empty." }, { status: 400 });
     if (!validEmail(customerEmail)) return NextResponse.json({ error: "Please enter a valid email address for your invoice." }, { status: 400 });
 
-    const items = requested.map((item: { id?: string; quantity?: number }) => {
+    const items = requested.map((item: { id?: string; quantity?: number; color?: string }) => {
       const product = products.find((p) => p.id === item.id);
       const quantity = Number(item.quantity);
       if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) throw new Error("Invalid cart item.");
-      return { ...product, quantity };
+      return { ...product, quantity, color: product.id === "touch-up-pen" ? (typeof item.color === "string" && ["Silvery","Grey","Red","Blue","Black","White","Pearl White","Varnish"].includes(item.color) ? item.color : "Black") : undefined };
     });
 
     const subtotalRands = items.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
         store: "CleanEdge",
         orderId,
         invoiceToken,
-        items: items.map((item) => `${item.id}x${item.quantity}`).join(","),
+        items: items.map((item) => `${item.id}x${item.quantity}${item.color ? `-${item.color}` : ""}`).join(","),
         subtotalCents: String(subtotalCents),
         shippingCents: String(shippingCents),
       },
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
       customerEmail,
       items: items.map((item) => ({
         id: item.id,
-        name: item.name,
+        name: item.color ? `${item.name} — ${item.color}` : item.name,
         quantity: item.quantity,
         unitPriceCents: Math.round(sellingPrice(item.cost) * 100),
         lineTotalCents: Math.round(sellingPrice(item.cost) * 100) * item.quantity,
