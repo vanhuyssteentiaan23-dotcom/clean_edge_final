@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 
 const products = [
   { id: "microfiber-5", name: "5-Pack Microfiber Cloths", qty: "5 pcs", cost: 40, image: "/images/microfiber-5.jpg", description: "1200-wash ultra-fine microfiber cleaning cloths. High-performance, super absorbent and streak-free, chemical-free and ideal for car washing and jewelry care. Random colour." },
@@ -29,9 +30,24 @@ export default function Home() {
   const [checkoutError, setCheckoutError] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState<(typeof products)[number] | null>(null);
-  const [touchUpColor, setTouchUpColor] = useState("Black");
   const [cartColors, setCartColors] = useState<Record<string, string>>({});
+  const [cartReady, setCartReady] = useState(false);
+
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem("cleanedge_cart");
+      const savedColors = localStorage.getItem("cleanedge_cart_colors");
+      if (savedCart) setCart(JSON.parse(savedCart));
+      if (savedColors) setCartColors(JSON.parse(savedColors));
+    } catch {}
+    setCartReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!cartReady) return;
+    localStorage.setItem("cleanedge_cart", JSON.stringify(cart));
+    localStorage.setItem("cleanedge_cart_colors", JSON.stringify(cartColors));
+  }, [cart, cartColors, cartReady]);
 
   const cartItems = useMemo(
     () => products.filter((p) => cart[p.id]).map((p) => ({ ...p, quantity: cart[p.id], selectedColor: p.id === "touch-up-pen" ? cartColors[p.id] || "Black" : undefined })),
@@ -90,8 +106,6 @@ export default function Home() {
     }
   };
 
-  const closeProduct = () => setSelectedProduct(null);
-
   return (
     <main>
       <div className="topbar">Professional detailing essentials · built for the garage</div>
@@ -119,10 +133,10 @@ export default function Home() {
         <div className="grid">
           {products.map((p) => (
             <article className="card" key={p.id}>
-              <button className="photo photoButton" onClick={() => setSelectedProduct(p)} aria-label={`View ${p.name}`}>
+              <Link className="photo photoLink" href={`/product/${p.id}`} aria-label={`View ${p.name}`}>
                 <Image src={p.image} alt={p.name} fill sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" />
                 <span className="photoHint">View product</span>
-              </button>
+              </Link>
               <div className="body">
                 <div className="qty">{p.qty}</div>
                 <h3>{p.name}</h3>
@@ -145,28 +159,6 @@ export default function Home() {
         <div><strong>© 2026 CleanEdge · Automotive detailing supplies</strong><div className="contactDetails"><a href="tel:+27823160428">082 316 0428</a><a href="mailto:tiaanvanhuyssteen18@gmail.com">tiaanvanhuyssteen18@gmail.com</a></div></div>
         <div className="footerLinks"><a href="/terms">Terms &amp; Conditions</a><a href="/cookies">Cookie Policy</a></div>
       </footer>
-
-      {selectedProduct && (
-        <div className="productModalBackdrop" onClick={closeProduct}>
-          <div className="productModal" onClick={(event) => event.stopPropagation()}>
-            <button className="productModalClose" onClick={closeProduct} aria-label="Close product details">×</button>
-            <div className="productModalImage"><Image src={selectedProduct.image} alt={selectedProduct.name} fill sizes="(max-width: 700px) 90vw, 520px" /></div>
-            <div className="productModalInfo">
-              <div className="eyebrow">{selectedProduct.qty}</div>
-              <h2>{selectedProduct.name}</h2>
-              <div className="modalPrice">R {sellingPrice(selectedProduct.cost).toFixed(2)}</div>
-              <p>{selectedProduct.description}</p>
-              {selectedProduct.id === "touch-up-pen" && (
-                <div className="colorOptions">
-                  <strong>Choose colour</strong>
-                  <div>{touchUpColors.map((color) => <button key={color} className={touchUpColor === color ? "colorOption active" : "colorOption"} onClick={() => setTouchUpColor(color)}>{color}</button>)}</div>
-                </div>
-              )}
-              <button className="add modalAdd" onClick={() => { addToCart(selectedProduct.id, selectedProduct.id === "touch-up-pen" ? touchUpColor : undefined); closeProduct(); }}>Add to cart</button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {cartOpen && (
         <div className="cartBackdrop" onClick={() => setCartOpen(false)}>
