@@ -1,17 +1,20 @@
 import Image from "next/image";
 
 const products = [
-  { name: "5-Pack Microfiber Cloths", qty: "5 pcs", image: "/images/microfiber-5.jpg" },
-  { name: "10-Pack Microfiber Cloths", qty: "10 pcs", image: "/images/microfiber-10.jpg" },
-  { name: "50-Pack Microfiber Cloths", qty: "50 pcs", image: "/images/microfiber-50.jpg" },
-  { name: "10-Pack Black Microfiber Cloths", qty: "10 pcs", image: "/images/microfiber-black-10.jpg" },
-  { name: "5-Piece Detail Brush Set", qty: "5 pcs", image: "/images/detail-brushes.jpg" },
-  { name: "Car Drying Towel", qty: "1 pc", image: "/images/drying-towel.jpg" },
-  { name: "Detailing Cleaning Mitt", qty: "1 pc", image: "/images/cleaning-mitt.jpg" },
-  { name: "Heavy-Duty Nitrile Gloves", qty: "Box", image: "/images/nitrile-gloves.jpg" },
-  { name: "Automotive Paint Touch-Up Pen", qty: "Multiple colours", image: "/images/touch-up-pen.jpg" },
-  { name: "Car Tire & Rim Cleaning Brush", qty: "1 pc", image: "/images/tire-rim-brush.jpg" },
+  { name: "5-Pack Microfiber Cloths", qty: "5 pcs", cost: 40, image: "/images/microfiber-5.jpg" },
+  { name: "10-Pack Microfiber Cloths", qty: "10 pcs", cost: 70, image: "/images/microfiber-10.jpg" },
+  { name: "50-Pack Microfiber Cloths", qty: "50 pcs", cost: 329, image: "/images/microfiber-50.jpg" },
+  { name: "10-Pack Black Microfiber Cloths", qty: "10 pcs", cost: 50, image: "/images/microfiber-black-10.jpg" },
+  { name: "5-Piece Detail Brush Set", qty: "5 pcs", cost: 65, image: "/images/detail-brushes.jpg" },
+  { name: "Car Drying Towel", qty: "1 pc", cost: 120, image: "/images/drying-towel.jpg" },
+  { name: "Detailing Cleaning Mitt", qty: "1 pc", cost: 60, image: "/images/cleaning-mitt.jpg" },
+  { name: "Heavy-Duty Nitrile Gloves", qty: "Box", cost: 105, image: "/images/nitrile-gloves.jpg" },
+  { name: "Automotive Paint Touch-Up Pen", qty: "Multiple colours", cost: 40, image: "/images/touch-up-pen.jpg" },
+  { name: "Car Tire & Rim Cleaning Brush", qty: "1 pc", cost: 50, image: "/images/tire-rim-brush.jpg" },
+  { name: "16-Piece Car Wash Kit", qty: "16 pcs", cost: 300, image: "/images/car-wash-kit.jpg" },
 ];
+
+const sellingPrice = (cost: number) => cost * 1.65;
 
 export default function Home() {
   return (
@@ -37,7 +40,6 @@ export default function Home() {
       <section id="shop" className="section shell">
         <div className="sectionhead">
           <div><div className="eyebrow">The collection</div><h2>Tools for the finish</h2></div>
-          <p>These are the products from the screenshots you supplied. The reference screenshots are used only for the visual direction: colour, contrast, typography and overall feel.</p>
         </div>
 
         <div className="grid">
@@ -49,20 +51,17 @@ export default function Home() {
               <div className="body">
                 <div className="qty">{p.qty}</div>
                 <h3>{p.name}</h3>
-                <p>Original product image supplied for CleanEdge.</p>
-                <div className="price">Price pending <small>Supplier cost × 1.65</small></div>
+                <div className="price">R {sellingPrice(p.cost).toFixed(2)}</div>
                 <button className="add">Add to cart</button>
               </div>
             </article>
           ))}
         </div>
-        <div className="note">Selling price rule: supplier cost × 1.65. No product cost has been invented where a supplier price was not provided.</div>
       </section>
 
       <section id="about" className="about">
         <div className="shell sectionhead">
           <div><div className="eyebrow">CleanEdge</div><h2>Rugged. Simple. Focused.</h2></div>
-          <p>No EARND branding, products, copy, prices or claims are used. Only the requested black / cream / red-orange visual direction is carried over.</p>
         </div>
       </section>
       <footer className="shell">© 2026 CleanEdge · Automotive detailing supplies</footer>
