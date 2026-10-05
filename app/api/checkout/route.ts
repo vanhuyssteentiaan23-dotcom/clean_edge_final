@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
-import { attachCheckout, createOrder, makeInvoiceToken, makeOrderId } from "../../lib/cleanedge-order";
+import { attachCheckout, createOrder, makeInvoiceToken, makeOrderId } from "../lib/cleanedge-order";
 
 const products = [
   { id: "microfiber-5", name: "5-Pack Microfiber Cloths", cost: 40 },
