@@ -15,10 +15,9 @@ const products = [
   { id: "touch-up-pen", name: "Automotive Paint Touch-Up Pen", qty: "Multiple colours", cost: 40, image: "/images/touch-up-pen.jpg" },
   { id: "tire-rim-brush", name: "Car Tire & Rim Cleaning Brush", qty: "1 pc", cost: 50, image: "/images/tire-rim-brush.jpg" },
   { id: "car-wash-kit", name: "16-Piece Car Wash Kit", qty: "16 pcs", cost: 300, image: "/images/car-wash-kit.jpg" },
-  { id: "checkout-test", name: "Checkout Test Item", qty: "Temporary test", cost: 0, price: 2, image: "/images/microfiber-5.jpg" },
 ];
 
-const sellingPrice = (product: { cost: number; price?: number }) => product.price ?? product.cost * 1.65;
+const sellingPrice = (cost: number) => cost * 1.65;
 
 export default function Home() {
   const [cart, setCart] = useState<Record<string, number>>({});
@@ -31,7 +30,7 @@ export default function Home() {
     [cart]
   );
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const cartTotal = cartItems.reduce((sum, item) => sum + sellingPrice(item) * item.quantity, 0);
+  const cartTotal = cartItems.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
 
   const addToCart = (id: string) => {
     setCart((current) => ({ ...current, [id]: (current[id] || 0) + 1 }));
@@ -105,7 +104,7 @@ export default function Home() {
               <div className="body">
                 <div className="qty">{p.qty}</div>
                 <h3>{p.name}</h3>
-                <div className="price">R {sellingPrice(p).toFixed(2)}</div>
+                <div className="price">R {sellingPrice(p.cost).toFixed(2)}</div>
                 <button className="add" onClick={() => addToCart(p.id)}>Add to cart</button>
               </div>
             </article>
@@ -138,14 +137,14 @@ export default function Home() {
                       <div className="cartThumb"><Image src={item.image} alt="" fill sizes="80px" /></div>
                       <div className="cartInfo">
                         <strong>{item.name}</strong>
-                        <span>R {sellingPrice(item).toFixed(2)} each</span>
+                        <span>R {sellingPrice(item.cost).toFixed(2)} each</span>
                         <div className="quantity">
                           <button onClick={() => changeQuantity(item.id, -1)}>−</button>
                           <b>{item.quantity}</b>
                           <button onClick={() => changeQuantity(item.id, 1)}>+</button>
                         </div>
                       </div>
-                      <div className="lineTotal">R {(sellingPrice(item) * item.quantity).toFixed(2)}</div>
+                      <div className="lineTotal">R {(sellingPrice(item.cost) * item.quantity).toFixed(2)}</div>
                     </div>
                   ))}
                 </div>
