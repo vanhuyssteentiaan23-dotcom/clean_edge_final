@@ -12,10 +12,12 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json().catch(() => ({}));
-  if (typeof body?.password !== "string" || !crypto.timingSafeEqual(
-    Buffer.from(body.password),
-    Buffer.from(password)
-  )) {
+  if (typeof body?.password !== "string") {
+    return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
+  }
+  const supplied = Buffer.from(body.password);
+  const expected = Buffer.from(password);
+  if (supplied.length !== expected.length || !crypto.timingSafeEqual(supplied, expected)) {
     return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
   }
 
