@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 type Item = { id: string; name: string; quantity: number; unitPriceCents: number; lineTotalCents: number };
-type Order = { id: string; customer_name: string; customer_email: string; total_cents: number; status: string; created_at: string; paid_at: string | null; items: Item[] };
+type Order = { id: string; customer_name: string; customer_email: string; subtotal_cents?: number; shipping_cents?: number; total_cents: number; status: string; created_at: string; paid_at: string | null; items: Item[] };
 
 const money = (cents: number) => `R ${(cents / 100).toFixed(2)}`;
 
@@ -110,7 +110,7 @@ export default function OrdersAdmin() {
                 <span>#{order.id.slice(0, 8).toUpperCase()}<small>{new Date(order.created_at).toLocaleString("en-ZA")}</small></span>
                 <span>{order.customer_name || "Customer"}<small>{order.customer_email}</small></span>
                 <span>{(order.items || []).map((item) => `${item.quantity}× ${item.name}`).join(", ")}</span>
-                <span>{money(order.total_cents)}</span>
+                <span>{money(order.total_cents)}<small>{order.shipping_cents === 0 ? "Free shipping" : `Shipping ${money(order.shipping_cents || 0)}`}</small></span>
                 <span className={`status ${order.status}`}>{order.status}</span>
               </div>
             ))}
