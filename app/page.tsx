@@ -138,14 +138,14 @@ export default function Home() {
                       <div className="cartThumb"><Image src={item.image} alt="" fill sizes="80px" /></div>
                       <div className="cartInfo">
                         <strong>{item.name}</strong>
-                        <span>R {sellingPrice(item.cost).toFixed(2)} each</span>
+                        <span>R {sellingPrice(item).toFixed(2)} each</span>
                         <div className="quantity">
                           <button onClick={() => changeQuantity(item.id, -1)}>−</button>
                           <b>{item.quantity}</b>
                           <button onClick={() => changeQuantity(item.id, 1)}>+</button>
                         </div>
                       </div>
-                      <div className="lineTotal">R {(sellingPrice(item.cost) * item.quantity).toFixed(2)}</div>
+                      <div className="lineTotal">R {(sellingPrice(item) * item.quantity).toFixed(2)}</div>
                     </div>
                   ))}
                 </div>
