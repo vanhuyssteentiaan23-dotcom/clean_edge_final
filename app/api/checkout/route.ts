@@ -1,4 +1,3 @@
-import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { attachCheckout, createOrder, makeInvoiceToken, makeOrderId } from "../../../lib/cleanedge-order";
 
@@ -17,6 +16,8 @@ const products = [
 ];
 
 const sellingPrice = (cost: number) => cost * 1.65;
+const STANDARD_SHIPPING_CENTS = 6000;
+const FREE_SHIPPING_THRESHOLD_CENTS = 150000;
 
 function validEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -45,8 +46,10 @@ export async function POST(request: Request) {
       return { ...product, quantity };
     });
 
-    const totalRands = items.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
-    const amount = Math.round(totalRands * 100);
+    const subtotalRands = items.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
+    const subtotalCents = Math.round(subtotalRands * 100);
+    const shippingCents = subtotalCents > FREE_SHIPPING_THRESHOLD_CENTS ? 0 : STANDARD_SHIPPING_CENTS;
+    const amount = subtotalCents + shippingCents;
     if (amount < 200) return NextResponse.json({ error: "Yoco requires a minimum payment of R2.00." }, { status: 400 });
 
     const origin = new URL(request.url).origin;
@@ -64,6 +67,8 @@ export async function POST(request: Request) {
         orderId,
         invoiceToken,
         items: items.map((item) => `${item.id}x${item.quantity}`).join(","),
+        subtotalCents: String(subtotalCents),
+        shippingCents: String(shippingCents),
       },
     };
 
