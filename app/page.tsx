@@ -85,7 +85,7 @@ export default function Home() {
       <div className="topbar">Professional detailing essentials · built for the garage</div>
       <nav className="nav shell">
         <div className="logo">CLEAN<span>EDGE</span></div>
-        <div className="navlinks"><a href="#shop">Shop</a><a href="#about">About</a><a href="/terms">T&amp;C</a></div>
+        <div className="navlinks"><a href="#shop">Shop</a><a href="#about">About</a><a href="/terms">T&amp;C</a></div><a className="whatsappTop" href="https://wa.me/27823160428?text=Hi%20CleanEdge%2C%20I%27d%20like%20to%20ask%20about%20your%20products." target="_blank" rel="noreferrer">WhatsApp</a>
         <button className="cart" onClick={() => setCartOpen(true)}>Cart <b>{cartCount}</b></button>
       </nav>
 
@@ -134,7 +134,13 @@ export default function Home() {
         </div>
       </section>
       <footer className="shell footer">
-        <div>© 2026 CleanEdge · Automotive detailing supplies</div>
+        <div>
+          <strong>© 2026 CleanEdge · Automotive detailing supplies</strong>
+          <div className="contactDetails">
+            <a href="tel:+27823160428">082 316 0428</a>
+            <a href="mailto:tiaanvanhuyssteen18@gmail.com">tiaanvanhuyssteen18@gmail.com</a>
+          </div>
+        </div>
         <div className="footerLinks"><a href="/terms">Terms &amp; Conditions</a><a href="/cookies">Cookie Policy</a></div>
       </footer>
 
