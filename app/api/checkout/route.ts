@@ -17,7 +17,7 @@ const products = [
 const sellingPrice = (cost: number) => cost * 1.65;
 
 export async function POST(request: Request) {
-  const secretKey = process.env.YOCO_SECRET_KEY;
+  const secretKey = process.env.YOCO_SECRET_KEY ?? process.env.YOCO_SECRET_KEY1;
   if (!secretKey) return NextResponse.json({ error: "Yoco is not configured on the server yet." }, { status: 500 });
 
   try {
