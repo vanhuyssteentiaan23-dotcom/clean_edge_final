@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
-import { listAdminOrders } from "../../lib/cleanedge-order";
+import { listAdminOrders } from "../lib/cleanedge-order";
 
 function cookieValue(password: string) {
   return crypto.createHmac("sha256", password).update("CleanEdge admin session").digest("hex");
