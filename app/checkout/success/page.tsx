@@ -3,8 +3,8 @@ export default function CheckoutSuccess() {
     <main className="checkoutPage">
       <div className="checkoutBox">
         <div className="eyebrow">CleanEdge</div>
-        <h1>Payment complete.</h1>
-        <p>Thanks for your order. Your payment has been sent through Yoco.</p>
+        <h1>Thanks for your order.</h1>
+        <p>Yoco has returned you to CleanEdge after checkout. Payment confirmation will be handled separately before an order is fulfilled.</p>
         <a className="cta" href="/">Back to CleanEdge</a>
       </div>
     </main>
