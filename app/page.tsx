@@ -135,7 +135,7 @@ export default function Home() {
           {products.map((p) => (
             <article className="card" key={p.id}>
               <Link className="photo photoLink" href={`/product/${p.id}`} aria-label={`View ${p.name}`}>
-                <Image src={p.image} alt={p.name} fill sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" />
+                <img src={p.image} alt={p.name} className="productCardImage" />
                 <span className="photoHint">View product</span>
               </Link>
               <div className="body">
