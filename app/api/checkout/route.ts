@@ -12,9 +12,10 @@ const products = [
   { id: "touch-up-pen", name: "Automotive Paint Touch-Up Pen", cost: 40 },
   { id: "tire-rim-brush", name: "Car Tire & Rim Cleaning Brush", cost: 50 },
   { id: "car-wash-kit", name: "16-Piece Car Wash Kit", cost: 300 },
+  { id: "checkout-test", name: "Checkout Test Item", cost: 0, price: 2 },
 ];
 
-const sellingPrice = (cost: number) => cost * 1.65;
+const sellingPrice = (product: { cost: number; price?: number }) => product.price ?? product.cost * 1.65;
 
 export async function POST(request: Request) {
   const secretKey = process.env.YOCO_SECRET_KEY ?? process.env.YOCO_SECRET_KEY1;
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
       return { ...product, quantity };
     });
 
-    const totalRands = items.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
+    const totalRands = items.reduce((sum, item) => sum + sellingPrice(item) * item.quantity, 0);
     const amount = Math.round(totalRands * 100);
     if (amount < 200) return NextResponse.json({ error: "Yoco requires a minimum payment of R2.00." }, { status: 400 });
 
