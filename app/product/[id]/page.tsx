@@ -58,8 +58,8 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
       <section className="shell productDetail">
         <div className="productGallery">
-          <div className="productMainImage"><Image src={product.image} alt={product.name} fill priority sizes="(max-width: 800px) 100vw, 58vw" /></div>
-          <div className="productThumb"><Image src={product.image} alt="" fill sizes="90px" /></div>
+          <div className="productMainImage"><Image src={product.image} alt={product.name} fill priority unoptimized sizes="(max-width: 800px) 100vw, 58vw" className="productMainImageAsset" /></div>
+          <div className="productThumb"><Image src={product.image} alt="" fill unoptimized sizes="90px" className="productThumbAsset" /></div>
         </div>
 
         <div className="productInfo">
