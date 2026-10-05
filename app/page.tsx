@@ -41,6 +41,7 @@ export default function Home() {
       if (savedColors) setCartColors(JSON.parse(savedColors));
     } catch {}
     setCartReady(true);
+    if (new URLSearchParams(window.location.search).get("cart") === "open") setCartOpen(true);
   }, []);
 
   useEffect(() => {
