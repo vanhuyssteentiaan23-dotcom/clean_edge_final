@@ -24,6 +24,8 @@ export default function Home() {
   const [cartOpen, setCartOpen] = useState(false);
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
 
   const cartItems = useMemo(
     () => products.filter((p) => cart[p.id]).map((p) => ({ ...p, quantity: cart[p.id] })),
@@ -48,6 +50,10 @@ export default function Home() {
 
   const checkout = async () => {
     if (!cartItems.length || checkingOut) return;
+    if (!customerEmail.trim()) {
+      setCheckoutError("Please enter your email address so we can send your invoice.");
+      return;
+    }
     setCheckingOut(true);
     setCheckoutError("");
 
@@ -57,6 +63,8 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           items: cartItems.map((item) => ({ id: item.id, quantity: item.quantity })),
+          customerName,
+          customerEmail,
         }),
       });
       const data = await response.json();
@@ -152,6 +160,17 @@ export default function Home() {
                 <div className="cartSummary">
                   <span>Total</span>
                   <strong>R {cartTotal.toFixed(2)}</strong>
+                </div>
+                <div className="customerFields">
+                  <label>
+                    Name <span>(optional)</span>
+                    <input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Your name" />
+                  </label>
+                  <label>
+                    Email <span>(required)</span>
+                    <input type="email" value={customerEmail} onChange={(event) => setCustomerEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" />
+                  </label>
+                  <p>We’ll email your paid invoice and order details here.</p>
                 </div>
                 {checkoutError && <div className="checkoutError">{checkoutError}</div>}
                 <button className="checkout" onClick={checkout} disabled={checkingOut}>
