@@ -21,5 +21,12 @@
 .photoLink{position:relative !important;display:block !important;width:100% !important;height:300px !important;min-height:300px !important;background:#fff !important;overflow:hidden !important;cursor:pointer}.productCardImage{display:block !important;width:100% !important;height:100% !important;object-fit:contain !important}.photoHint{z-index:2 !important}.photoLink:hover .productCardImage{transform:scale(1.015);transition:transform .2s ease}
 @media(max-width:700px){.photoLink{height:260px !important;min-height:260px !important}}
 
-/* Clean product photography: crop the baked-in lower caption strip and keep source images at full resolution. */
-.productMainImageAsset{object-fit:contain !important;transform:scale(1.14) translateY(-2.5%) !important;transform-origin:center center !important}.productThumbAsset{object-fit:contain !important;transform:scale(1.14) translateY(-2.5%) !important;transform-origin:center center !important}.productCardImage{object-fit:contain !important;transform:scale(1.12) translateY(-2.5%) !important;transform-origin:center center !important}
+
+/* Clean product photography: fit the supplied HD photos tightly and crop baked-in labels/strips. */
+.photoLink{height:300px !important;min-height:300px !important;background:#fff !important;overflow:hidden !important;display:block !important}
+.productCardImage{width:100% !important;height:100% !important;object-fit:contain !important;transform:scale(1.28) translateY(-1.5%) !important;transform-origin:center center !important}
+.productMainImage{overflow:hidden !important;background:#fff !important}
+.productMainImageAsset{object-fit:contain !important;transform:scale(1.25) translateY(-1.5%) !important;transform-origin:center center !important}
+.productThumb{overflow:hidden !important}
+.productThumbAsset{object-fit:contain !important;transform:scale(1.25) translateY(-1.5%) !important;transform-origin:center center !important}
+@media(max-width:700px){.photoLink{height:260px !important;min-height:260px !important}.productCardImage{transform:scale(1.28) translateY(-1.5%) !important}}
