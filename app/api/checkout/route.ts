@@ -34,9 +34,10 @@ const products = [
   { id: "shield-engine-cleaner-500ml", name: "Shield Engine Cleaner Water Based 500ml", cost: 39.99 },
   { id: "shield-splash-n-dash-sponge", name: "Shield Splash n Dash Sponge", cost: 29.99 },
   { id: "shield-foam-applicator-pads-3", name: "Shield Foam Applicator Pads 3-Pack", cost: 54.99 },
-  { id: "starter-kit", name: "CleanEdge Starter Kit", cost: 241.82, salePrice: 399 },
-  { id: "interior-kit", name: "CleanEdge Interior Kit", cost: 241.82, salePrice: 399 },
-  { id: "complete-kit", name: "CleanEdge Complete Detail Kit", cost: 544.85, salePrice: 899 },
+  { id: "wash-shine-kit", name: "CleanEdge Wash & Shine Kit", cost: 364.98, salePrice: 549 },
+  { id: "wheel-tyre-kit", name: "CleanEdge Wheel & Tyre Kit", cost: 239.98, salePrice: 379 },
+  { id: "interior-glass-kit", name: "CleanEdge Interior & Glass Kit", cost: 319.98, salePrice: 479 },
+  { id: "ultimate-detail-kit", name: "CleanEdge Ultimate Detail Kit", cost: 634.95, salePrice: 999 },
 ];
 
 const sellingPrice = (cost: number, salePrice?: number) => salePrice ?? cost * 1.65;
