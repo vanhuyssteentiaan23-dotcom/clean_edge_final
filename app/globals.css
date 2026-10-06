@@ -34,3 +34,6 @@
 .productThumb{overflow:hidden !important}
 .productThumbAsset{object-fit:contain !important}
 @media(max-width:700px){.photoLink{aspect-ratio:1 / 1 !important;height:auto !important;min-height:0 !important}.productCardImage{height:114% !important}}
+
+/* Hide the baked-in quantity/color strip at the bottom of the supplied product photos. */
+.productImageCrop::after{content:"";position:absolute;left:0;right:0;bottom:0;height:13%;background:#fff;z-index:2;pointer-events:none}
