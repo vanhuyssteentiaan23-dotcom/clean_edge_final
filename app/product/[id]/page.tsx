@@ -16,9 +16,11 @@ const products = [
   { id: "touch-up-pen", name: "Automotive Paint Touch-Up Pen", qty: "Multiple colours", cost: 40, image: "/images/touch-up-pen.jpg", description: "Car paint repair pen for scratch and rust touch-up. Supplied with water sandpaper. Choose your colour before adding to cart." },
   { id: "tire-rim-brush", name: "Car Tire & Rim Cleaning Brush", qty: "1 pc", cost: 50, image: "/images/tire-rim-brush.jpg", description: "Covered hub brush with wax-coated crystal bead foam for smooth tire brushing, interior crevices, edges and corners. PP material." },
   { id: "car-wash-kit", name: "16-Piece Car Wash Kit", qty: "16 pcs", cost: 300, image: "/images/car-wash-kit.jpg", description: "16-piece car cleaning tool set with various detail brushes for air-conditioning vents, seat gaps and other car and motorcycle cleaning jobs." },
+  { id: "microfiber-roll", name: "100-Piece Microfiber Cleaning Cloth Roll", qty: "100 pcs", cost: 70, image: "https://car101.in/cdn/shop/files/listingrollmicrofiber-2.jpg?v=1774097875&width=900", description: "Extra-large reusable microfiber cleaning cloth roll with tear-away towels. Soft, absorbent and suitable for car detailing, glass, interiors and everyday cleaning." },
 ];
 
 const touchUpColors = ["Silvery", "Grey", "Red", "Blue", "Black", "White", "Pearl White", "Varnish"];
+const microfiberRollColors = ["Pink", "Grey", "Blue"];
 const sellingPrice = (cost: number) => cost * 1.65;
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -37,7 +39,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       const cart = JSON.parse(localStorage.getItem("cleanedge_cart") || "{}");
       const colors = JSON.parse(localStorage.getItem("cleanedge_cart_colors") || "{}");
       cart[product.id] = (cart[product.id] || 0) + quantity;
-      if (product.id === "touch-up-pen") colors[product.id] = color;
+      if (product.id === "touch-up-pen" || product.id === "microfiber-roll") colors[product.id] = product.id === "microfiber-roll" && color === "Black" ? "Grey" : color;
       localStorage.setItem("cleanedge_cart", JSON.stringify(cart));
       localStorage.setItem("cleanedge_cart_colors", JSON.stringify(colors));
       if (goToCart) window.location.assign("/?cart=open");
@@ -58,8 +60,8 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
       <section className="shell productDetail">
         <div className="productGallery">
-          <div className="productMainImage"><Image src={product.image} alt={product.name} fill priority unoptimized sizes="(max-width: 800px) 100vw, 58vw" className="productMainImageAsset" /></div>
-          <div className="productThumb"><Image src={product.image} alt="" fill unoptimized sizes="90px" className="productThumbAsset" /></div>
+          <div className="productMainImage">{product.id === "microfiber-roll" ? <img src={product.image} alt={product.name} className="productMainImageAsset" /> : <Image src={product.image} alt={product.name} fill priority unoptimized sizes="(max-width: 800px) 100vw, 58vw" className="productMainImageAsset" />}</div>
+          <div className="productThumb">{product.id === "microfiber-roll" ? <img src={product.image} alt="" className="productThumbAsset" /> : <Image src={product.image} alt="" fill unoptimized sizes="90px" className="productThumbAsset" />}</div>
         </div>
 
         <div className="productInfo">
@@ -69,11 +71,11 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
           <p className="productDescription">{product.description}</p>
           <div className="productPrice">R {sellingPrice(product.cost).toFixed(2)}</div>
 
-          {product.id === "touch-up-pen" && (
+          {(product.id === "touch-up-pen" || product.id === "microfiber-roll") && (
             <div className="productOption">
               <strong>Colour</strong>
               <div className="productOptionsGrid">
-                {touchUpColors.map((option) => <button key={option} className={color === option ? "productOptionButton active" : "productOptionButton"} onClick={() => setColor(option)}>{option}</button>)}
+                {(product.id === "microfiber-roll" ? microfiberRollColors : touchUpColors).map((option) => <button key={option} className={(product.id === "microfiber-roll" && color === "Black" ? "Grey" : color) === option ? "productOptionButton active" : "productOptionButton"} onClick={() => setColor(option)}>{option}</button>)}
               </div>
             </div>
           )}
