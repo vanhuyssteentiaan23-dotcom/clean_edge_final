@@ -14,9 +14,12 @@ const products = [
   { id: "tire-rim-brush", name: "Car Tire & Rim Cleaning Brush", cost: 50 },
   { id: "car-wash-kit", name: "16-Piece Car Wash Kit", cost: 300 },
   { id: "microfiber-roll", name: "100-Piece Microfiber Cleaning Cloth Roll", cost: 70 },
+  { id: "starter-kit", name: "CleanEdge Starter Kit", cost: 241.82, salePrice: 399 },
+  { id: "interior-kit", name: "CleanEdge Interior Kit", cost: 241.82, salePrice: 399 },
+  { id: "complete-kit", name: "CleanEdge Complete Detail Kit", cost: 544.85, salePrice: 899 },
 ];
 
-const sellingPrice = (cost: number) => cost * 1.65;
+const sellingPrice = (cost: number, salePrice?: number) => salePrice ?? cost * 1.65;
 const microfiberRollColors = ["Pink", "Grey", "Blue"];
 const STANDARD_SHIPPING_CENTS = 6000;
 const FREE_SHIPPING_THRESHOLD_CENTS = 150000;
@@ -48,7 +51,7 @@ export async function POST(request: Request) {
       return { ...product, quantity, color: product.id === "touch-up-pen" ? (typeof item.color === "string" && ["Silvery","Grey","Red","Blue","Black","White","Pearl White","Varnish"].includes(item.color) ? item.color : "Black") : product.id === "microfiber-roll" ? (typeof item.color === "string" && microfiberRollColors.includes(item.color) ? item.color : "Grey") : undefined };
     });
 
-    const subtotalRands = items.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
+    const subtotalRands = items.reduce((sum, item) => sum + sellingPrice(item.cost, item.salePrice) * item.quantity, 0);
     const subtotalCents = Math.round(subtotalRands * 100);
     const shippingCents = subtotalCents > FREE_SHIPPING_THRESHOLD_CENTS ? 0 : STANDARD_SHIPPING_CENTS;
     const amount = subtotalCents + shippingCents;
@@ -100,8 +103,8 @@ export async function POST(request: Request) {
         id: item.id,
         name: item.color ? `${item.name} — ${item.color}` : item.name,
         quantity: item.quantity,
-        unitPriceCents: Math.round(sellingPrice(item.cost) * 100),
-        lineTotalCents: Math.round(sellingPrice(item.cost) * 100) * item.quantity,
+        unitPriceCents: Math.round(sellingPrice(item.cost, item.salePrice) * 100),
+        lineTotalCents: Math.round(sellingPrice(item.cost, item.salePrice) * 100) * item.quantity,
       })),
       totalCents: amount,
     });
