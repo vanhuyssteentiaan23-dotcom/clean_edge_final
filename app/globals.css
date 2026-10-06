@@ -23,12 +23,14 @@
 
 
 
-/* Product images: use the near-square HD originals at their natural proportions. */
+
+/* Product card image crop: preserve the card height while hiding only the baked-in bottom label. */
 .photoLink{height:auto !important;min-height:0 !important;aspect-ratio:1 / 1 !important;background:#fff !important;overflow:hidden !important;display:block !important}
-.productCardImage{display:block !important;width:100% !important;height:114% !important;object-fit:contain !important;object-position:center top !important;transform:none !important}
-.productMainImage{height:min(680px,58vw) !important;min-height:440px !important;aspect-ratio:1 / 1 !important;overflow:hidden !important;background:#fff !important}
-.productMainImageAsset{object-fit:contain !important;width:100% !important;height:107% !important;object-position:center top !important;transform:none !important}
+.productImageCrop{position:absolute !important;inset:0 !important;overflow:hidden !important;display:block !important;background:#fff !important}
+.productCardImage{display:block !important;width:100% !important;height:114% !important;object-fit:contain !important;object-position:center top !important;max-width:none !important;transform:none !important}
+.photoLink .photoHint{z-index:3 !important}
+.productMainImage{overflow:hidden !important;background:#fff !important}
+.productMainImageAsset{object-fit:contain !important}
 .productThumb{overflow:hidden !important}
-.productThumbAsset{object-fit:contain !important;width:100% !important;height:107% !important;object-position:center top !important;transform:none !important}
-@media(max-width:900px){.productMainImage{height:88vw !important;min-height:0 !important}}
-@media(max-width:700px){.photoLink{aspect-ratio:1 / 1 !important;height:auto !important;min-height:0 !important}.productCardImage{display:block !important;width:100% !important;height:114% !important;object-fit:contain !important;object-position:center top !important;transform:none !important}}
+.productThumbAsset{object-fit:contain !important}
+@media(max-width:700px){.photoLink{aspect-ratio:1 / 1 !important;height:auto !important;min-height:0 !important}.productCardImage{height:114% !important}}
