@@ -142,7 +142,7 @@ export default function Home() {
               <div className="body">
                 <div className="qty">{p.qty}</div>
                 <h3>{p.name}</h3>
-                <div className="price">{p.id === "microfiber-5" ? <><span>R 50.00</span> <del>R 66.00</del><small>SPECIAL PRICE</small></> : <>R {productPrice(p).toFixed(2)}</>}</div>
+                <div className="price">{p.id === "microfiber-5" ? <>R 50.00</> : <>R {productPrice(p).toFixed(2)}</>}</div>
                 <button className="add" onClick={() => addToCart(p.id)}>Add to cart</button>
               </div>
             </article>
