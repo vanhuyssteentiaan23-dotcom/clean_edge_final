@@ -20,6 +20,7 @@ const products = [
 
 const touchUpColors = ["Silvery", "Grey", "Red", "Blue", "Black", "White", "Pearl White", "Varnish"];
 const sellingPrice = (cost: number) => cost * 1.65;
+const productPrice = (product: { id: string; cost: number }) => product.id === "microfiber-5" ? 50 : sellingPrice(product.cost);
 const STANDARD_SHIPPING = 60;
 const FREE_SHIPPING_THRESHOLD = 1500;
 
@@ -55,7 +56,7 @@ export default function Home() {
     [cart, cartColors]
   );
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const cartSubtotal = cartItems.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
+  const cartSubtotal = cartItems.reduce((sum, item) => sum + productPrice(item) * item.quantity, 0);
   const shipping = cartSubtotal > FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
   const cartTotal = cartSubtotal + shipping;
 
@@ -141,7 +142,7 @@ export default function Home() {
               <div className="body">
                 <div className="qty">{p.qty}</div>
                 <h3>{p.name}</h3>
-                <div className="price">R {sellingPrice(p.cost).toFixed(2)}</div>
+                <div className="price">{p.id === "microfiber-5" ? <><span>R 50.00</span> <del>R 66.00</del><small>SPECIAL PRICE</small></> : <>R {productPrice(p).toFixed(2)}</>}</div>
                 <button className="add" onClick={() => addToCart(p.id)}>Add to cart</button>
               </div>
             </article>
@@ -171,8 +172,8 @@ export default function Home() {
                   {cartItems.map((item) => (
                     <div className="cartItem" key={item.id}>
                       <div className="cartThumb"><Image src={item.image} alt="" fill sizes="80px" /></div>
-                      <div className="cartInfo"><strong>{item.name}</strong><span>R {sellingPrice(item.cost).toFixed(2)} each</span>{item.selectedColor && <span>Colour: {item.selectedColor}</span>}<div className="quantity"><button onClick={() => changeQuantity(item.id, -1)}>−</button><b>{item.quantity}</b><button onClick={() => changeQuantity(item.id, 1)}>+</button></div></div>
-                      <div className="lineTotal">R {(sellingPrice(item.cost) * item.quantity).toFixed(2)}</div>
+                      <div className="cartInfo"><strong>{item.name}</strong><span>R {productPrice(item).toFixed(2)} each</span>{item.selectedColor && <span>Colour: {item.selectedColor}</span>}<div className="quantity"><button onClick={() => changeQuantity(item.id, -1)}>−</button><b>{item.quantity}</b><button onClick={() => changeQuantity(item.id, 1)}>+</button></div></div>
+                      <div className="lineTotal">R {(productPrice(item) * item.quantity).toFixed(2)}</div>
                     </div>
                   ))}
                 </div>
