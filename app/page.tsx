@@ -19,7 +19,13 @@ const products = [
 const touchUpColors = ["Silvery", "Grey", "Red", "Blue", "Black", "White", "Pearl White", "Varnish"];
 const microfiberRollColors = ["Pink", "Grey", "Blue"];
 const sellingPrice = (cost: number) => cost * 1.65;
-const productPrice = (product: { id: string; cost: number }) => product.id === "microfiber-5" ? 50 : sellingPrice(product.cost);
+const productPrice = (product: { id: string; cost: number; salePrice?: number }) => product.salePrice ?? (product.id === "microfiber-5" ? 50 : sellingPrice(product.cost));
+
+const bundles = [
+  { id: "starter-kit", name: "CleanEdge Starter Kit", qty: "4 essentials", cost: 270, salePrice: 399, badge: "BEST START", image: "/images/car-wash-kit.jpg", description: "A simple first kit for keeping your car clean: microfiber cloths, wash mitt, rim brush and drying towel." },
+  { id: "interior-kit", name: "CleanEdge Interior Kit", qty: "4 essentials", cost: 255, salePrice: 399, badge: "INTERIOR", image: "/images/microfiber-black-10.jpg", description: "The practical interior-cleaning setup: microfiber cloths, black detailing cloths, cleaning mitt and nitrile gloves." },
+  { id: "complete-kit", name: "CleanEdge Complete Detail Kit", qty: "5 essentials", cost: 600, salePrice: 899, badge: "BEST VALUE", image: "/images/car-wash-kit.jpg", description: "Our full starter setup for exterior detailing, including the 16-piece wash kit, drying towel, mitt, rim brush and 100-piece microfiber roll." },
+];
 const STANDARD_SHIPPING = 60;
 const FREE_SHIPPING_THRESHOLD = 1500;
 
@@ -60,9 +66,10 @@ export default function Home() {
     return list;
   }, [sortOption]);
 
+  const allProducts = useMemo(() => [...products, ...bundles], []);
   const cartItems = useMemo(
-    () => products.filter((p) => cart[p.id]).map((p) => ({ ...p, quantity: cart[p.id], selectedColor: p.id === "touch-up-pen" ? cartColors[p.id] || "Black" : p.id === "microfiber-roll" ? cartColors[p.id] || "Grey" : undefined })),
-    [cart, cartColors]
+    () => allProducts.filter((p) => cart[p.id]).map((p) => ({ ...p, quantity: cart[p.id], selectedColor: p.id === "touch-up-pen" ? cartColors[p.id] || "Black" : p.id === "microfiber-roll" ? cartColors[p.id] || "Grey" : undefined })),
+    [allProducts, cart, cartColors]
   );
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cartItems.reduce((sum, item) => sum + productPrice(item) * item.quantity, 0);
@@ -129,19 +136,40 @@ export default function Home() {
 
       <header className="hero">
         <div className="shell">
-          <div className="eyebrow">Automotive detailing essentials</div>
-          <h1>Clean cars.<br/><em>Sharper edges.</em></h1>
-          <p>Practical microfiber, brushes, drying towels, gloves and touch-up essentials for people who take the finish seriously.</p>
-          <a className="cta" href="#shop">Shop the collection</a>
-          <div className="shippingBanner">STANDARD COURIER R60 <span>•</span> ORDERS OVER R1,500 SHIP FREE</div>
+          <div className="eyebrow">South African automotive detailing essentials</div>
+          <h1>Your car.<br/><em>Properly clean.</em></h1>
+          <p>Premium-feel detailing gear without the premium price. Start with a CleanEdge kit, then build your garage with products you actually use.</p>
+          <div className="heroActions"><a className="cta" href="#kits">Shop detailing kits</a><a className="secondaryCta" href="#shop">Shop individual products</a></div>
+          <div className="shippingBanner">R60 STANDARD COURIER <span>•</span> FREE SHIPPING OVER R1,500 <span>•</span> SECURE YOCO CHECKOUT</div>
         </div>
       </header>
 
       <div className="ticker shell"><span>✦ DETAILING GEAR</span><span>✦ GARAGE READY</span><span>✦ CLEAN FINISH</span><span>✦ BUILT TO WORK</span></div>
 
+      <section id="kits" className="section shell kitsSection">
+        <div className="sectionhead">
+          <div><div className="eyebrow">Start here</div><h2>Detailing kits that make it easy</h2></div>
+        </div>
+        <p className="sectionLead">Don't know what to buy? We've bundled the essentials so you can get everything you need in one order.</p>
+        <div className="bundleGrid">
+          {bundles.map((bundle) => (
+            <article className="bundleCard" key={bundle.id}>
+              <div className="bundleImage"><img src={bundle.image} alt={bundle.name} /></div>
+              <div className="bundleBody">
+                <span className="bundleBadge">{bundle.badge}</span>
+                <h3>{bundle.name}</h3>
+                <p>{bundle.description}</p>
+                <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {sellingPrice(bundle.cost).toFixed(2)}</del></div>
+                <button className="add bundleAdd" onClick={() => addToCart(bundle.id)}>Add kit to cart</button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section id="shop" className="section shell">
         <div className="sectionhead">
-          <div><div className="eyebrow">The collection</div><h2>Tools for the finish</h2></div>
+          <div><div className="eyebrow">Build your garage</div><h2>Individual detailing gear</h2></div>
           <label className="productSort">
             <span>Sort products</span>
             <select value={sortOption} onChange={(event) => setSortOption(event.target.value as SortOption)} aria-label="Sort products">
@@ -166,6 +194,17 @@ export default function Home() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="whySection">
+        <div className="shell whyGrid">
+          <div><div className="eyebrow">Why CleanEdge</div><h2>Made for people who care how their car looks.</h2></div>
+          <div className="whyPoints">
+            <div><strong>01 · Practical products</strong><span>No filler. Just detailing tools you can actually use.</span></div>
+            <div><strong>02 · Easy bundles</strong><span>Start with a kit and add products as your detailing setup grows.</span></div>
+            <div><strong>03 · Secure checkout</strong><span>Pay online securely through Yoco in South African rand.</span></div>
+          </div>
         </div>
       </section>
 
