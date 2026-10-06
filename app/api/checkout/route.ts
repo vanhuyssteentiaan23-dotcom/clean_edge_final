@@ -13,9 +13,11 @@ const products = [
   { id: "touch-up-pen", name: "Automotive Paint Touch-Up Pen", cost: 40 },
   { id: "tire-rim-brush", name: "Car Tire & Rim Cleaning Brush", cost: 50 },
   { id: "car-wash-kit", name: "16-Piece Car Wash Kit", cost: 300 },
+  { id: "microfiber-roll", name: "100-Piece Microfiber Cleaning Cloth Roll", cost: 70 },
 ];
 
 const sellingPrice = (cost: number) => cost * 1.65;
+const microfiberRollColors = ["Pink", "Grey", "Blue"];
 const STANDARD_SHIPPING_CENTS = 6000;
 const FREE_SHIPPING_THRESHOLD_CENTS = 150000;
 
@@ -43,7 +45,7 @@ export async function POST(request: Request) {
       const product = products.find((p) => p.id === item.id);
       const quantity = Number(item.quantity);
       if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) throw new Error("Invalid cart item.");
-      return { ...product, quantity, color: product.id === "touch-up-pen" ? (typeof item.color === "string" && ["Silvery","Grey","Red","Blue","Black","White","Pearl White","Varnish"].includes(item.color) ? item.color : "Black") : undefined };
+      return { ...product, quantity, color: product.id === "touch-up-pen" ? (typeof item.color === "string" && ["Silvery","Grey","Red","Blue","Black","White","Pearl White","Varnish"].includes(item.color) ? item.color : "Black") : product.id === "microfiber-roll" ? (typeof item.color === "string" && microfiberRollColors.includes(item.color) ? item.color : "Grey") : undefined };
     });
 
     const subtotalRands = items.reduce((sum, item) => sum + sellingPrice(item.cost) * item.quantity, 0);
