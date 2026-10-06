@@ -44,9 +44,10 @@ const sellingPrice = (cost: number) => cost * 1.65;
 const productPrice = (product: { id: string; cost: number; salePrice?: number }) => product.salePrice ?? (product.id === "microfiber-5" ? 50 : sellingPrice(product.cost));
 
 const bundles = [
-  { id: "starter-kit", name: "CleanEdge Starter Kit", qty: "4 essentials", cost: 270, compareAtPrice: 429.5, salePrice: 399, badge: "BEST START", image: "/images/car-wash-kit.jpg", description: "A simple first kit for keeping your car clean: microfiber cloths, wash mitt, rim brush and drying towel." },
-  { id: "interior-kit", name: "CleanEdge Interior Kit", qty: "4 essentials", cost: 255, compareAtPrice: 404.75, salePrice: 399, badge: "INTERIOR", image: "/images/microfiber-black-10.jpg", description: "The practical interior-cleaning setup: microfiber cloths, black detailing cloths, cleaning mitt and nitrile gloves." },
-  { id: "complete-kit", name: "CleanEdge Complete Detail Kit", qty: "5 essentials", cost: 600, compareAtPrice: 990, salePrice: 899, badge: "BEST VALUE", image: "/images/car-wash-kit.jpg", description: "Our full starter setup for exterior detailing, including the 16-piece wash kit, drying towel, mitt, rim brush and 100-piece microfiber roll." },
+  { id: "wash-shine-kit", name: "CleanEdge Wash & Shine Kit", qty: "5 essentials", cost: 364.98, compareAtPrice: 586.21, salePrice: 549, badge: "MOST POPULAR", image: "/images/cleanedge-bundle-deal.svg", description: "Everything for a proper wash: shampoo, snow foam, wash mitt, drying towel and microfiber cloths." },
+  { id: "wheel-tyre-kit", name: "CleanEdge Wheel & Tyre Kit", qty: "4 essentials", cost: 239.98, compareAtPrice: 395.96, salePrice: 379, badge: "WHEELS", image: "/images/cleanedge-bundle-deal.svg", description: "Clean and finish your wheels and tyres with tyre shine, mag cleaner, a rim brush and black microfiber cloths." },
+  { id: "interior-glass-kit", name: "CleanEdge Interior & Glass Kit", qty: "5 essentials", cost: 319.98, compareAtPrice: 527.96, salePrice: 479, badge: "INTERIOR", image: "/images/cleanedge-bundle-deal.svg", description: "A practical interior setup with all-purpose cleaner, glass cleaner, black microfiber cloths, detail brushes and gloves." },
+  { id: "ultimate-detail-kit", name: "CleanEdge Ultimate Detail Kit", qty: "9 essentials", cost: 634.95, compareAtPrice: 1047.65, salePrice: 999, badge: "BEST VALUE", image: "/images/cleanedge-bundle-deal.svg", description: "The full CleanEdge setup: wash chemistry, tyre care, wheel cleaner, APC, drying towel, wash mitt, rim brush and microfiber roll." },
 ];
 const STANDARD_SHIPPING = 60;
 const FREE_SHIPPING_THRESHOLD = 1500;
