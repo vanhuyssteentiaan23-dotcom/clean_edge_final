@@ -16,9 +16,11 @@ const products = [
   { id: "touch-up-pen", name: "Automotive Paint Touch-Up Pen", qty: "Multiple colours", cost: 40, image: "/images/touch-up-pen.jpg", description: "Car paint repair pen for scratch and rust touch-up. Supplied with water sandpaper. Choose your colour before adding to cart." },
   { id: "tire-rim-brush", name: "Car Tire & Rim Cleaning Brush", qty: "1 pc", cost: 50, image: "/images/tire-rim-brush.jpg", description: "Covered hub brush with wax-coated crystal bead foam for smooth tire brushing, interior crevices, edges and corners. PP material." },
   { id: "car-wash-kit", name: "16-Piece Car Wash Kit", qty: "16 pcs", cost: 300, image: "/images/car-wash-kit.jpg", description: "16-piece car cleaning tool set with various detail brushes for air-conditioning vents, seat gaps and other car and motorcycle cleaning jobs." },
+  { id: "microfiber-roll", name: "100-Piece Microfiber Cleaning Cloth Roll", qty: "100 pcs", cost: 70, image: "https://car101.in/cdn/shop/files/listingrollmicrofiber-2.jpg?v=1774097875&width=900", description: "Extra-large reusable microfiber cleaning cloth roll with tear-away towels. Soft, absorbent and suitable for car detailing, glass, interiors and everyday cleaning." },
 ];
 
 const touchUpColors = ["Silvery", "Grey", "Red", "Blue", "Black", "White", "Pearl White", "Varnish"];
+const microfiberRollColors = ["Pink", "Grey", "Blue"];
 const sellingPrice = (cost: number) => cost * 1.65;
 const productPrice = (product: { id: string; cost: number }) => product.id === "microfiber-5" ? 50 : sellingPrice(product.cost);
 const STANDARD_SHIPPING = 60;
@@ -52,7 +54,7 @@ export default function Home() {
   }, [cart, cartColors, cartReady]);
 
   const cartItems = useMemo(
-    () => products.filter((p) => cart[p.id]).map((p) => ({ ...p, quantity: cart[p.id], selectedColor: p.id === "touch-up-pen" ? cartColors[p.id] || "Black" : undefined })),
+    () => products.filter((p) => cart[p.id]).map((p) => ({ ...p, quantity: cart[p.id], selectedColor: p.id === "touch-up-pen" ? cartColors[p.id] || "Black" : p.id === "microfiber-roll" ? cartColors[p.id] || "Grey" : undefined })),
     [cart, cartColors]
   );
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -61,7 +63,7 @@ export default function Home() {
   const cartTotal = cartSubtotal + shipping;
 
   const addToCart = (id: string, color?: string) => {
-    if (id === "touch-up-pen" && color) setCartColors((current) => ({ ...current, [id]: color }));
+    if ((id === "touch-up-pen" || id === "microfiber-roll") && color) setCartColors((current) => ({ ...current, [id]: color }));
     setCart((current) => ({ ...current, [id]: (current[id] || 0) + 1 }));
   };
 
@@ -71,7 +73,7 @@ export default function Home() {
       const quantity = (next[id] || 0) + amount;
       if (quantity <= 0) {
         delete next[id];
-        if (id === "touch-up-pen") setCartColors((colors) => {
+        if (id === "touch-up-pen" || id === "microfiber-roll") setCartColors((colors) => {
           const nextColors = { ...colors };
           delete nextColors[id];
           return nextColors;
@@ -143,7 +145,7 @@ export default function Home() {
                 <div className="qty">{p.qty}</div>
                 <h3>{p.name}</h3>
                 <div className="price">{p.id === "microfiber-5" ? <><span>R 50.00</span> <del>R 66.00</del></> : <>R {productPrice(p).toFixed(2)}</>}</div>
-                <button className="add" onClick={() => addToCart(p.id)}>Add to cart</button>
+                <button className="add" onClick={() => addToCart(p.id, p.id === "microfiber-roll" ? "Grey" : undefined)}>Add to cart</button>
               </div>
             </article>
           ))}
@@ -171,7 +173,7 @@ export default function Home() {
                 <div className="cartItems">
                   {cartItems.map((item) => (
                     <div className="cartItem" key={item.id}>
-                      <div className="cartThumb"><Image src={item.image} alt="" fill sizes="80px" /></div>
+                      <div className="cartThumb">{item.id === "microfiber-roll" ? <img src={item.image} alt="" /> : <Image src={item.image} alt="" fill sizes="80px" />}</div>
                       <div className="cartInfo"><strong>{item.name}</strong><span>R {productPrice(item).toFixed(2)} each</span>{item.selectedColor && <span>Colour: {item.selectedColor}</span>}<div className="quantity"><button onClick={() => changeQuantity(item.id, -1)}>−</button><b>{item.quantity}</b><button onClick={() => changeQuantity(item.id, 1)}>+</button></div></div>
                       <div className="lineTotal">R {(productPrice(item) * item.quantity).toFixed(2)}</div>
                     </div>
