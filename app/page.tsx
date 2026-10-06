@@ -26,7 +26,10 @@ const productPrice = (product: { id: string; cost: number }) => product.id === "
 const STANDARD_SHIPPING = 60;
 const FREE_SHIPPING_THRESHOLD = 1500;
 
+type SortOption = "best" | "high" | "low";
+
 export default function Home() {
+  const [sortOption, setSortOption] = useState<SortOption>("best");
   const [cart, setCart] = useState<Record<string, number>>({});
   const [cartOpen, setCartOpen] = useState(false);
   const [checkingOut, setCheckingOut] = useState(false);
@@ -52,6 +55,13 @@ export default function Home() {
     localStorage.setItem("cleanedge_cart", JSON.stringify(cart));
     localStorage.setItem("cleanedge_cart_colors", JSON.stringify(cartColors));
   }, [cart, cartColors, cartReady]);
+
+  const sortedProducts = useMemo(() => {
+    const list = [...products];
+    if (sortOption === "high") return list.sort((a, b) => productPrice(b) - productPrice(a));
+    if (sortOption === "low") return list.sort((a, b) => productPrice(a) - productPrice(b));
+    return list;
+  }, [sortOption]);
 
   const cartItems = useMemo(
     () => products.filter((p) => cart[p.id]).map((p) => ({ ...p, quantity: cart[p.id], selectedColor: p.id === "touch-up-pen" ? cartColors[p.id] || "Black" : p.id === "microfiber-roll" ? cartColors[p.id] || "Grey" : undefined })),
@@ -133,9 +143,19 @@ export default function Home() {
       <div className="ticker shell"><span>✦ DETAILING GEAR</span><span>✦ GARAGE READY</span><span>✦ CLEAN FINISH</span><span>✦ BUILT TO WORK</span></div>
 
       <section id="shop" className="section shell">
-        <div className="sectionhead"><div><div className="eyebrow">The collection</div><h2>Tools for the finish</h2></div></div>
+        <div className="sectionhead">
+          <div><div className="eyebrow">The collection</div><h2>Tools for the finish</h2></div>
+          <label className="productSort">
+            <span>Sort products</span>
+            <select value={sortOption} onChange={(event) => setSortOption(event.target.value as SortOption)} aria-label="Sort products">
+              <option value="best">Best Sellers</option>
+              <option value="high">Price: Highest to Lowest</option>
+              <option value="low">Price: Lowest to Highest</option>
+            </select>
+          </label>
+        </div>
         <div className="grid">
-          {products.map((p) => (
+          {sortedProducts.map((p) => (
             <article className="card" key={p.id}>
               <Link className="photo photoLink" href={`/product/${p.id}`} aria-label={`View ${p.name}`}>
                 <span className="productImageCrop"><img src={p.image} alt={p.name} className="productCardImage" /></span>
