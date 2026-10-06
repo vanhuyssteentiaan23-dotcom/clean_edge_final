@@ -1,6 +1,8 @@
 const fs = require("fs");
+
 const path = require("path");
 const AdmZip = require("adm-zip");
+const sharp = require("sharp");
 
 const root = process.cwd();
 const zipPath = path.join(root, "CleanEdge_HD_Originals.zip");
@@ -33,11 +35,22 @@ const allowed = new Set([
   "tire-rim-brush.jpg"
 ]);
 
+(async () => {
 for (const entry of zip.getEntries()) {
   const name = path.basename(entry.entryName);
   if (allowed.has(name)) {
-    fs.writeFileSync(path.join(outDir, name), entry.getData());
-    console.log("Extracted", name);
+    const target = path.join(outDir, name);
+    const temp = path.join(outDir, `.__original-${name}`);
+    fs.writeFileSync(temp, entry.getData());
+    await sharp(temp)
+      .metadata()
+      .then(({ width, height }) => sharp(temp)
+        .extract({ left: 0, top: 0, width, height: Math.floor(height * 0.945) })
+        .jpeg({ quality: 96, mozjpeg: true })
+        .toFile(target)
+      );
+    fs.unlinkSync(temp);
+    console.log("Extracted and cleaned", name);
   }
 }
 
@@ -47,3 +60,4 @@ if (missing.length) {
 }
 
 console.log("CleanEdge HD product images ready.");
+})();
