@@ -89,7 +89,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
         <div className="productInfo">
           <div className="productShippingBadge">STANDARD COURIER R60 · FREE OVER R1,500</div>
-          <div className="eyebrow">{product.qty}{product.category ? ` · ${product.category}` : ""}</div>
+          <div className="eyebrow">{product.qty}</div>
           <h1>{product.name}</h1>
           <p className="productDescription">{product.description}</p>
           <div className="productPrice">R {productPrice(product).toFixed(2)}</div>
