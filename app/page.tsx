@@ -22,9 +22,9 @@ const sellingPrice = (cost: number) => cost * 1.65;
 const productPrice = (product: { id: string; cost: number; salePrice?: number }) => product.salePrice ?? (product.id === "microfiber-5" ? 50 : sellingPrice(product.cost));
 
 const bundles = [
-  { id: "starter-kit", name: "CleanEdge Starter Kit", qty: "4 essentials", cost: 270, salePrice: 399, badge: "BEST START", image: "/images/car-wash-kit.jpg", description: "A simple first kit for keeping your car clean: microfiber cloths, wash mitt, rim brush and drying towel." },
-  { id: "interior-kit", name: "CleanEdge Interior Kit", qty: "4 essentials", cost: 255, salePrice: 399, badge: "INTERIOR", image: "/images/microfiber-black-10.jpg", description: "The practical interior-cleaning setup: microfiber cloths, black detailing cloths, cleaning mitt and nitrile gloves." },
-  { id: "complete-kit", name: "CleanEdge Complete Detail Kit", qty: "5 essentials", cost: 600, salePrice: 899, badge: "BEST VALUE", image: "/images/car-wash-kit.jpg", description: "Our full starter setup for exterior detailing, including the 16-piece wash kit, drying towel, mitt, rim brush and 100-piece microfiber roll." },
+  { id: "starter-kit", name: "CleanEdge Starter Kit", qty: "4 essentials", cost: 270, compareAtPrice: 429.5, salePrice: 399, badge: "BEST START", image: "/images/car-wash-kit.jpg", description: "A simple first kit for keeping your car clean: microfiber cloths, wash mitt, rim brush and drying towel." },
+  { id: "interior-kit", name: "CleanEdge Interior Kit", qty: "4 essentials", cost: 255, compareAtPrice: 404.75, salePrice: 399, badge: "INTERIOR", image: "/images/microfiber-black-10.jpg", description: "The practical interior-cleaning setup: microfiber cloths, black detailing cloths, cleaning mitt and nitrile gloves." },
+  { id: "complete-kit", name: "CleanEdge Complete Detail Kit", qty: "5 essentials", cost: 600, compareAtPrice: 990, salePrice: 899, badge: "BEST VALUE", image: "/images/car-wash-kit.jpg", description: "Our full starter setup for exterior detailing, including the 16-piece wash kit, drying towel, mitt, rim brush and 100-piece microfiber roll." },
 ];
 const STANDARD_SHIPPING = 60;
 const FREE_SHIPPING_THRESHOLD = 1500;
@@ -73,7 +73,7 @@ export default function Home() {
   );
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cartItems.reduce((sum, item) => sum + productPrice(item) * item.quantity, 0);
-  const shipping = cartSubtotal > FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
+  const shipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
   const cartTotal = cartSubtotal + shipping;
 
   const addToCart = (id: string, color?: string) => {
@@ -159,7 +159,7 @@ export default function Home() {
                 <span className="bundleBadge">{bundle.badge}</span>
                 <h3>{bundle.name}</h3>
                 <p>{bundle.description}</p>
-                <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {sellingPrice(bundle.cost).toFixed(2)}</del></div>
+                <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {bundle.compareAtPrice.toFixed(2)}</del><small>Save R {(bundle.compareAtPrice - bundle.salePrice).toFixed(2)}</small></div>
                 <button className="add bundleAdd" onClick={() => addToCart(bundle.id)}>Add kit to cart</button>
               </div>
             </article>
@@ -238,7 +238,7 @@ export default function Home() {
                 <div className="cartSummary"><span>Subtotal</span><strong>R {cartSubtotal.toFixed(2)}</strong></div>
                 <div className="cartSummary"><span>Shipping</span><strong>{shipping === 0 ? "FREE" : `R ${shipping.toFixed(2)}`}</strong></div>
                 <div className="cartSummary cartGrandTotal"><span>Total</span><strong>R {cartTotal.toFixed(2)}</strong></div>
-                <p className="shippingNote">{shipping === 0 ? "Free shipping applied — your order is over R1,500." : "Standard courier: R60. Orders over R1,500 ship free."}</p>
+                <div className="shippingProgress">{shipping === 0 ? <><strong>Free shipping unlocked ✓</strong><span>Your order qualifies for free delivery.</span></> : <><strong>Add R {(FREE_SHIPPING_THRESHOLD - cartSubtotal).toFixed(2)} for free shipping</strong><div className="shippingTrack"><i style={{ width: `${Math.min(100, (cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100)}%` }} /></div><span>Standard courier is R60 until you reach R1,500.</span></>}</div>
                 <div className="customerFields">
                   <label>Name <span>(optional)</span><input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Your name" /></label>
                   <label>Email <span>(required)</span><input type="email" value={customerEmail} onChange={(event) => setCustomerEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" /></label>
@@ -246,7 +246,7 @@ export default function Home() {
                 </div>
                 {checkoutError && <div className="checkoutError">{checkoutError}</div>}
                 <button className="checkout" onClick={checkout} disabled={checkingOut}>{checkingOut ? "Opening Yoco…" : "Checkout with Yoco"}</button>
-                <p className="secureNote">Secure payment via Yoco · ZAR</p>
+                <p className="secureNote">Secure payment via Yoco · ZAR · Your payment is encrypted</p>
               </>
             )}
           </aside>

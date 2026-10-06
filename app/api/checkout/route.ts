@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { attachCheckout, createOrder, makeInvoiceToken, makeOrderId } from "../../../lib/cleanedge-order";
 
 const products = [
-  { id: "microfiber-5", name: "5-Pack Microfiber Cloths", cost: 40 },
+  { id: "microfiber-5", name: "5-Pack Microfiber Cloths", cost: 40, salePrice: 50 },
   { id: "microfiber-10", name: "10-Pack Microfiber Cloths", cost: 70 },
   { id: "microfiber-50", name: "50-Pack Microfiber Cloths", cost: 329 },
   { id: "microfiber-black-10", name: "10-Pack Black Microfiber Cloths", cost: 50 },
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
     const subtotalRands = items.reduce((sum, item) => sum + sellingPrice(item.cost, item.salePrice) * item.quantity, 0);
     const subtotalCents = Math.round(subtotalRands * 100);
-    const shippingCents = subtotalCents > FREE_SHIPPING_THRESHOLD_CENTS ? 0 : STANDARD_SHIPPING_CENTS;
+    const shippingCents = subtotalCents >= FREE_SHIPPING_THRESHOLD_CENTS ? 0 : STANDARD_SHIPPING_CENTS;
     const amount = subtotalCents + shippingCents;
     if (amount < 200) return NextResponse.json({ error: "Yoco requires a minimum payment of R2.00." }, { status: 400 });
 

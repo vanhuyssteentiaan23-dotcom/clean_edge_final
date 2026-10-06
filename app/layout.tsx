@@ -1,3 +1,3 @@
 import "./globals.css";
-export const metadata={title:"CleanEdge",description:"Automotive detailing essentials"};
+export const metadata={title:"CleanEdge | Automotive Detailing Products South Africa",description:"Shop CleanEdge automotive detailing products, microfiber cloths, wash kits, drying towels, brushes and detailing essentials in South Africa. Secure Yoco checkout and courier delivery.",keywords:["car detailing products South Africa","car cleaning products","car wash kit South Africa","microfiber car cloths","automotive detailing supplies","CleanEdge"]};
 export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}</body></html>}
