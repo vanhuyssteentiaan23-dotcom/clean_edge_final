@@ -24,7 +24,7 @@
 .photoLink:hover .productCardImage{width:100% !important;height:100% !important;object-fit:contain !important;object-position:center center !important;transform:none !important}
 .photoHint{z-index:2 !important}
 .productMainImageAsset,.productThumbAsset{display:block !important;width:100% !important;height:100% !important;max-width:100% !important;max-height:100% !important;object-fit:contain !important;object-position:center center !important;margin:0 !important;padding:0 !important}
-.productMainImage{position:relative !important;height:min(680px,68vw) !important;min-height:440px !important;background:#fff !important;border:1px solid #2d2d2d !important;overflow:hidden !important}
+.productMainImage{position:relative !important;height:min(680px,68vw) !important;min-height:440px !important;background:#0b0b0b !important;border:1px solid #2d2d2d !important;overflow:hidden !important}
 .productThumb{position:relative !important;width:88px !important;height:88px !important;margin-top:14px !important;background:#fff !important;border:2px solid var(--accent) !important;overflow:hidden !important}
 @media(max-width:900px){.productMainImage{height:75vw !important;min-height:360px !important}}
 @media(max-width:700px){.photoLink{height:300px !important;min-height:300px !important}}
