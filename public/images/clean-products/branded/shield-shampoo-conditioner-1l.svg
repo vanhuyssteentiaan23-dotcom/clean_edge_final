@@ -7,7 +7,7 @@
     <clipPath id="labelClip"><path d="M337 302 Q345 296 357 296 H667 Q679 296 687 305 L682 488 Q681 500 668 502 H354 Q341 500 339 488 Z"/></clipPath>
   </defs>
   <rect width="1024" height="1024" fill="#101010"/>
-  <image href="../shield-shampoo-conditioner-1l.png" x="0" y="0" width="1024" height="1024" preserveAspectRatio="xMidYMid meet"/>
+  <image href="/images/clean-products/shield-shampoo-conditioner-1l.png" x="0" y="0" width="1024" height="1024" preserveAspectRatio="xMidYMid meet"/>
   <g filter="url(#shadow)">
     <path d="M337 302 Q345 296 357 296 H667 Q679 296 687 305 L682 488 Q681 500 668 502 H354 Q341 500 339 488 Z" fill="url(#label)" stroke="url(#orange)" stroke-width="7"/>
     <g clip-path="url(#labelClip)">
