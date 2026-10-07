@@ -164,3 +164,74 @@
     box-shadow:3px 3px 0 rgba(255,255,255,.92),4px 4px 0 #080808 !important;
   }
 }
+
+
+/* REAL PRODUCT STICKER: visually sits on the product itself, not in the corner of the card. */
+.productStickerOnItem{
+  position:absolute !important;
+  z-index:8 !important;
+  left:50% !important;
+  top:55% !important;
+  width:35% !important;
+  min-width:86px !important;
+  max-width:150px !important;
+  aspect-ratio:1.72 !important;
+  transform:translate(-50%,-50%) perspective(420px) rotateY(-4deg) rotateZ(-1deg) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:1px !important;
+  padding:6px 8px !important;
+  box-sizing:border-box !important;
+  background:linear-gradient(145deg,#ff5a2b 0%,#ff421d 58%,#d93216 100%) !important;
+  color:#090909 !important;
+  border:2px solid #0a0a0a !important;
+  border-radius:5px 4px 6px 3px !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.38),inset 0 -3px 8px rgba(0,0,0,.18),5px 5px 0 rgba(0,0,0,.55) !important;
+  text-align:center !important;
+  line-height:.9 !important;
+  pointer-events:none !important;
+  overflow:hidden !important;
+}
+.productStickerOnItem::after{
+  content:"" !important;
+  position:absolute !important;
+  inset:3px !important;
+  border:1px solid rgba(0,0,0,.35) !important;
+  border-radius:3px !important;
+}
+.productStickerOnItem b{
+  font:900 12px/1 'Arial Black',Arial,sans-serif !important;
+  letter-spacing:-.05em !important;
+}
+.productStickerOnItem strong{
+  font:900 15px/1 'Arial Black',Arial,sans-serif !important;
+  letter-spacing:.02em !important;
+}
+.productStickerOnItem small{
+  font:900 5.5px/1.1 Inter,Arial,sans-serif !important;
+  letter-spacing:.16em !important;
+  margin-top:3px !important;
+}
+.productStickerDetail{
+  width:31% !important;
+  max-width:210px !important;
+  min-width:130px !important;
+  top:52% !important;
+}
+@media(max-width:700px){
+  .productStickerOnItem{
+    width:34% !important;
+    min-width:78px !important;
+    max-width:120px !important;
+  }
+  .productStickerOnItem b{font-size:10px !important}
+  .productStickerOnItem strong{font-size:13px !important}
+  .productStickerOnItem small{font-size:4.5px !important}
+  .productStickerDetail{
+    width:32% !important;
+    min-width:105px !important;
+    max-width:145px !important;
+  }
+}
