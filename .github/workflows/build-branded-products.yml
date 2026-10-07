@@ -12,101 +12,44 @@ permissions:
   contents: write
 
 jobs:
-  build-branded-products:
+  publish-branded-images:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install image renderer
+      - name: Download verified baked images
         run: |
-          python3 -m pip install --quiet pillow
-          npm install --no-save sharp
+          set -e
+          mkdir -p public/images/clean-products/branded
+          ids=(
+            shield-shampoo-conditioner-1l
+            shield-snow-foam-1l
+            shield-xtreme-shampoo-500ml
+            shield-jetwasher-1l
+            shield-tyre-shine-500ml
+            shield-tyre-gloss-aerosol-400ml
+            shield-tyre-polish-paste-400ml
+            shield-max-shine-tyre-gel-500ml
+            shield-mag-cleaner-500ml
+            shield-miraplate-500ml
+            shield-power-force-degreaser-1l
+            shield-waterless-glass-cleaner-1l
+            shield-high-foam-shampoo-5l
+            shield-splash-wash-wax-1l
+            shield-sheen-silicone-500ml
+            shield-car-polish-paste-200ml
+            shield-blade-apc-750ml
+            shield-engine-cleaner-500ml
+            shield-splash-n-dash-sponge
+            shield-foam-applicator-pads-3
+          )
+          base="https://sb-6af5f4zuq23t.vercel.run/branded-png"
+          for id in "${ids[@]}"; do
+            curl --fail --silent --show-error --location "${base}/${id}.png" -o "public/images/clean-products/branded/${id}.png"
+            file "public/images/clean-products/branded/${id}.png"
+          done
 
-      - name: Create baked product images
-        run: |
-          python3 <<'PY'
-          from PIL import Image, ImageDraw, ImageFont, ImageFilter
-          W = 1080
-          overlay = Image.new("RGBA", (W, W), (0, 0, 0, 0))
-          d = ImageDraw.Draw(overlay)
-
-          s = W / 1024
-          x0, y0 = int(337*s), int(296*s)
-          x1, y1 = int(687*s), int(502*s)
-          radius = int(12*s)
-
-          shadow = Image.new("RGBA", (W, W), (0,0,0,0))
-          sd = ImageDraw.Draw(shadow)
-          sd.rounded_rectangle((x0+int(7*s), y0+int(9*s), x1+int(7*s), y1+int(9*s)),
-                               radius=radius, fill=(0,0,0,185))
-          shadow = shadow.filter(ImageFilter.GaussianBlur(int(7*s)))
-          overlay = Image.alpha_composite(overlay, shadow)
-          d = ImageDraw.Draw(overlay)
-
-          d.rounded_rectangle((x0,y0,x1,y1), radius=radius,
-                              fill=(8,8,8,245), outline=(255,74,31,255),
-                              width=int(7*s))
-          d.polygon([(int(315*s),int(455*s)),(int(710*s),int(395*s)),
-                     (int(710*s),int(520*s)),(int(315*s),int(520*s))],
-                    fill=(17,17,17,140))
-          d.line((int(360*s),int(461*s),int(664*s),int(461*s)),
-                 fill=(255,74,31,255), width=int(5*s))
-          d.line((int(360*s),int(472*s),int(664*s),int(472*s)),
-                 fill=(255,74,31,90), width=int(2*s))
-
-          regular="/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-          bold="/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-          f1=ImageFont.truetype(regular, int(13*s))
-          f2=ImageFont.truetype(bold, int(30*s))
-          f3=ImageFont.truetype(bold, int(42*s))
-
-          def centered(text, y, font, fill):
-              box=d.textbbox((0,0),text,font=font)
-              d.text(((W-(box[2]-box[0]))//2,int(y*s)),text,font=font,fill=fill)
-
-          centered("PRO DETAILING",312,f1,(170,164,156,255))
-          centered("CLEAN",365,f2,(247,242,233,255))
-          centered("EDGE",404,f3,(255,74,31,255))
-          d.ellipse((int(356*s),int(339*s),int(366*s),int(349*s)),fill=(255,74,31,255))
-          d.ellipse((int(658*s),int(339*s),int(668*s),int(349*s)),fill=(255,74,31,255))
-          overlay.save("/tmp/cleanedge-label.png","PNG")
-          PY
-
-          node <<'NODE'
-          const sharp = require("sharp");
-          const fs = require("fs");
-          const path = require("path");
-
-          const ids = [
-            "shield-shampoo-conditioner-1l","shield-snow-foam-1l","shield-xtreme-shampoo-500ml",
-            "shield-jetwasher-1l","shield-tyre-shine-500ml","shield-tyre-gloss-aerosol-400ml",
-            "shield-tyre-polish-paste-400ml","shield-max-shine-tyre-gel-500ml","shield-mag-cleaner-500ml",
-            "shield-miraplate-500ml","shield-power-force-degreaser-1l","shield-waterless-glass-cleaner-1l",
-            "shield-high-foam-shampoo-5l","shield-splash-wash-wax-1l","shield-sheen-silicone-500ml",
-            "shield-car-polish-paste-200ml","shield-blade-apc-750ml","shield-engine-cleaner-500ml",
-            "shield-splash-n-dash-sponge","shield-foam-applicator-pads-3"
-          ];
-
-          const root="public/images/clean-products";
-          const out=path.join(root,"branded");
-          fs.mkdirSync(out,{recursive:true});
-
-          (async()=>{
-            for(const id of ids){
-              await sharp(path.join(root,id+".png"))
-                .composite([{input:"/tmp/cleanedge-label.png",blend:"over"}])
-                .png({quality:100})
-                .toFile(path.join(out,id+".png"));
-            }
-            console.log("Created",ids.length,"baked product PNGs");
-          })().catch(err=>{console.error(err);process.exit(1)});
-          NODE
-
-      - name: Commit baked images/
+      - name: Commit baked images
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -115,5 +58,5 @@ jobs:
             echo "No branded image changes."
             exit 0
           fi
-          git commit -m "Bake CleanEdge labels into product images"
+          git commit -m "Replace product images with baked CleanEdge PNGs"
           git push
