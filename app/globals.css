@@ -78,7 +78,9 @@
 
 
 
-/* CleanEdge product-card background: the supplied garage artwork is the backdrop; real product photos sit above it */
+
+
+/* CleanEdge product stage: transparent product cut-outs sit naturally over the garage artwork */
 .photoLink,.productImageCrop,.productMainImage,.productThumb,.cartThumb,.productModalImage{
   background-image:var(--product-bg) !important;
   background-size:cover !important;
@@ -86,11 +88,11 @@
   background-repeat:no-repeat !important;
   background-color:#090909 !important;
 }
-.productImageCrop{isolation:isolate !important}
 .productCardImage,.productMainImageAsset,.productThumbAsset{
-  mix-blend-mode:multiply !important;
+  mix-blend-mode:normal !important;
   filter:none !important;
   opacity:1 !important;
   position:relative !important;
   z-index:1 !important;
 }
+.productImageCrop,.photoLink{background-color:transparent !important}
