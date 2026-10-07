@@ -42,8 +42,6 @@ const products = [
 
 const sellingPrice = (cost: number, salePrice?: number) => salePrice ?? cost * 1.65;
 const microfiberRollColors = ["Pink", "Grey", "Blue"];
-const STANDARD_SHIPPING_CENTS = 6000;
-const FREE_SHIPPING_THRESHOLD_CENTS = 150000;
 
 function validEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -74,8 +72,8 @@ export async function POST(request: Request) {
 
     const subtotalRands = items.reduce((sum, item) => sum + sellingPrice(item.cost, item.salePrice) * item.quantity, 0);
     const subtotalCents = Math.round(subtotalRands * 100);
-    const shippingCents = subtotalCents >= FREE_SHIPPING_THRESHOLD_CENTS ? 0 : STANDARD_SHIPPING_CENTS;
-    const amount = subtotalCents + shippingCents;
+    const shippingCents = 0;
+    const amount = subtotalCents;
     if (amount < 200) return NextResponse.json({ error: "Yoco requires a minimum payment of R2.00." }, { status: 400 });
 
     const origin = new URL(request.url).origin;
