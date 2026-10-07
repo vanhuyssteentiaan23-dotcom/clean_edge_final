@@ -98,6 +98,13 @@ async function processLocalImage(name) {
 }
 
 (async () => {
+  const carWashSource = path.join(root, "CleanEdge_car-wash-kit.jpg");
+  if (fs.existsSync(carWashSource)) {
+    const target = path.join(outDir, "car-wash-kit.jpg");
+    await sharp(carWashSource).jpeg({quality:96, mozjpeg:true}).toFile(target);
+    await processLocalImage("car-wash-kit.jpg");
+  }
+
   if (fs.existsSync(zipPath)) {
     const zip = new AdmZip(zipPath);
     for (const name of legacyFiles) {
