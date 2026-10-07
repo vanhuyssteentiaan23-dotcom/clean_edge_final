@@ -54,7 +54,8 @@
 .whyPoints{display:grid;gap:18px}
 .whyPoints div{padding:18px 0;border-bottom:1px solid rgba(0,0,0,.1);display:grid;gap:6px}
 .whyPoints span{opacity:.68}
-@media(max-width:1050px){.bundleGrid{grid-template-columns:repeat(2,1fr)}}\n@media(max-width:800px){.bundleGrid,.whyGrid{grid-template-columns:1fr}.bundleBody p{min-height:0}.whySection{padding:55px 0}.heroActions{align-items:stretch;flex-direction:column}.heroActions a{width:100%}}
+@media(max-width:1050px){.bundleGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.bundleGrid,.whyGrid{grid-template-columns:1fr}.bundleBody p{min-height:0}.whySection{padding:55px 0}.heroActions{align-items:stretch;flex-direction:column}.heroActions a{width:100%}}
 
 .bundlePrice small{display:block;margin-top:5px;color:#ff8a6f;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.shippingProgress{margin:14px 0 18px;padding:14px;background:#141414;border:1px solid #303030;display:grid;gap:7px}.shippingProgress strong{font-size:12px}.shippingProgress span{color:#9e9890;font-size:10px;line-height:1.5}.shippingTrack{height:5px;background:#2a2a2a;overflow:hidden}.shippingTrack i{display:block;height:100%;background:var(--accent);transition:width .25s ease}.secureNote{margin-top:10px}.bundlePrice{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}.bundlePrice del{color:#777;font-size:13px}
 
