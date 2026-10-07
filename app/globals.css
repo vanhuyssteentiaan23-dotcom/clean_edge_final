@@ -114,3 +114,53 @@
 /* Legacy microfiber photography: remove white source backgrounds while keeping the real product visible over the dark garage stage. */
 .productCardImageBlend{mix-blend-mode:multiply !important;}
 .photoLink.productPhotoDark{background:transparent !important;}
+
+
+/* CleanEdge branded product sticker — applied consistently to every product and bundle image. */
+.productSticker{
+  position:absolute !important;
+  top:14px !important;
+  left:14px !important;
+  z-index:6 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-width:82px !important;
+  height:30px !important;
+  padding:0 12px !important;
+  background:#ff4b24 !important;
+  color:#080808 !important;
+  border:2px solid #080808 !important;
+  box-shadow:4px 4px 0 rgba(255,255,255,.92), 5px 5px 0 #080808 !important;
+  font:900 10px/1 Inter,Arial,sans-serif !important;
+  letter-spacing:.12em !important;
+  text-transform:uppercase !important;
+  transform:rotate(-4deg) !important;
+  pointer-events:none !important;
+}
+.productSticker::before{
+  content:"✦" !important;
+  margin-right:6px !important;
+  font-size:11px !important;
+}
+.productStickerBundle{
+  top:12px !important;
+  left:12px !important;
+}
+.bundleImage{
+  position:relative !important;
+}
+.photo{
+  position:relative !important;
+}
+@media(max-width:600px){
+  .productSticker{
+    top:10px !important;
+    left:10px !important;
+    min-width:72px !important;
+    height:27px !important;
+    padding:0 9px !important;
+    font-size:9px !important;
+    box-shadow:3px 3px 0 rgba(255,255,255,.92),4px 4px 0 #080808 !important;
+  }
+}
