@@ -172,7 +172,7 @@ export default function Home() {
           {bundles.map((bundle) => (
             <article className="bundleCard" key={bundle.id}>
               <Link className="bundleCardLink" href={`/product/${bundle.id}`} aria-label={`View ${bundle.name}`}>
-                <div className="bundleImage"><span className="productStickerOnItem productStickerBundleOnItem" aria-hidden="true"><b>CLEAN</b><strong>EDGE</strong><small>PRO DETAILING</small></span><img src={bundle.image} alt={bundle.name} /></div>
+                <div className="bundleImage"><img src={bundle.image} alt={bundle.name} /></div>
                 <div className="bundleBody">
                   <span className="bundleBadge">{bundle.badge}</span>
                   <h3>{bundle.name}</h3>
