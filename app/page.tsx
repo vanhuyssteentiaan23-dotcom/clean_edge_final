@@ -40,8 +40,6 @@ const bundles = [
   { id: "wash-shine-kit", name: "CleanEdge Wash & Shine Kit", qty: "5 essentials", cost: 364.98, compareAtPrice: 586.21, salePrice: 549, badge: "MOST POPULAR", image: "/images/cleanedge-bundle-deal.svg", description: "Includes: Shield Car Shampoo & Conditioner 1L, Shield Snow Foam 1L, Detailing Cleaning Mitt, Car Drying Towel, and 10-Pack Microfiber Cloths." },
   { id: "ultimate-detail-kit", name: "CleanEdge Ultimate Detail Kit", qty: "9 essentials", cost: 634.95, compareAtPrice: 1047.65, salePrice: 999, badge: "BEST VALUE", image: "/images/cleanedge-bundle-deal.svg", description: "Includes: Shield Car Shampoo & Conditioner 1L, Shield Snow Foam 1L, Shield Tyre Shine Silicone 500ml, Shield Mag Cleaner 500ml, Shield Blade All Purpose Cleaner 750ml, Car Drying Towel, Detailing Cleaning Mitt, Car Tire & Rim Cleaning Brush, and 100-Piece Microfiber Cleaning Cloth Roll." },
 ];
-const STANDARD_SHIPPING = 60;
-const FREE_SHIPPING_THRESHOLD = 1500;
 
 type SortOption = "best" | "high" | "low";
 
@@ -89,8 +87,7 @@ export default function Home() {
   );
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cartItems.reduce((sum, item) => sum + productPrice(item) * item.quantity, 0);
-  const shipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
-  const cartTotal = cartSubtotal + shipping;
+  const cartTotal = cartSubtotal;
 
   const addToCart = (id: string, color?: string) => {
     if ((id === "touch-up-pen" || id === "microfiber-roll") && color) setCartColors((current) => ({ ...current, [id]: color }));
@@ -156,7 +153,7 @@ export default function Home() {
           <h1>Your car.<br/><em>Properly clean.</em></h1>
           <p>Premium-feel detailing gear without the premium price. Start with a CleanEdge kit, then build your garage with products you actually use.</p>
           <div className="heroActions"><a className="cta" href="#kits">Shop detailing kits</a><a className="secondaryCta" href="#shop">Shop individual products</a></div>
-          <div className="shippingBanner">R60 STANDARD COURIER <span>•</span> FREE SHIPPING OVER R1,500 <span>•</span> SECURE YOCO CHECKOUT</div>
+          <div className="shippingBanner">SECURE YOCO CHECKOUT</div>
         </div>
       </header>
 
@@ -255,9 +252,7 @@ export default function Home() {
                   ))}
                 </div>
                 <div className="cartSummary"><span>Subtotal</span><strong>R {cartSubtotal.toFixed(2)}</strong></div>
-                <div className="cartSummary"><span>Shipping</span><strong>{shipping === 0 ? "FREE" : `R ${shipping.toFixed(2)}`}</strong></div>
                 <div className="cartSummary cartGrandTotal"><span>Total</span><strong>R {cartTotal.toFixed(2)}</strong></div>
-                <div className="shippingProgress">{shipping === 0 ? <><strong>Free shipping unlocked ✓</strong><span>Your order qualifies for free delivery.</span></> : <><strong>Add R {(FREE_SHIPPING_THRESHOLD - cartSubtotal).toFixed(2)} for free shipping</strong><div className="shippingTrack"><i style={{ width: `${Math.min(100, (cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100)}%` }} /></div><span>Standard courier is R60 until you reach R1,500.</span></>}</div>
                 <div className="customerFields">
                   <label>Name <span>(optional)</span><input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Your name" /></label>
                   <label>Email <span>(required)</span><input type="email" value={customerEmail} onChange={(event) => setCustomerEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" /></label>
