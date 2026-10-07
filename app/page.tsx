@@ -35,10 +35,10 @@ const sellingPrice = (cost: number) => cost * 1.65;
 const productPrice = (product: { id: string; cost: number; salePrice?: number }) => product.salePrice ?? (product.id === "microfiber-5" ? 50 : sellingPrice(product.cost));
 
 const bundles = [
-  { id: "wash-shine-kit", name: "CleanEdge Wash & Shine Kit", qty: "5 essentials", cost: 364.98, compareAtPrice: 586.21, salePrice: 549, badge: "MOST POPULAR", image: "/images/cleanedge-bundle-deal.svg", description: "Everything for a proper wash: shampoo, snow foam, wash mitt, drying towel and microfiber cloths." },
-  { id: "wheel-tyre-kit", name: "CleanEdge Wheel & Tyre Kit", qty: "4 essentials", cost: 239.98, compareAtPrice: 395.96, salePrice: 379, badge: "WHEELS", image: "/images/cleanedge-bundle-deal.svg", description: "Clean and finish your wheels and tyres with tyre shine, mag cleaner, a rim brush and black microfiber cloths." },
-  { id: "interior-glass-kit", name: "CleanEdge Interior & Glass Kit", qty: "5 essentials", cost: 319.98, compareAtPrice: 527.96, salePrice: 479, badge: "INTERIOR", image: "/images/cleanedge-bundle-deal.svg", description: "A practical interior setup with all-purpose cleaner, glass cleaner, black microfiber cloths, detail brushes and gloves." },
-  { id: "ultimate-detail-kit", name: "CleanEdge Ultimate Detail Kit", qty: "9 essentials", cost: 634.95, compareAtPrice: 1047.65, salePrice: 999, badge: "BEST VALUE", image: "/images/cleanedge-bundle-deal.svg", description: "The full CleanEdge setup: wash chemistry, tyre care, wheel cleaner, APC, drying towel, wash mitt, rim brush and microfiber roll." },
+  { id: "wheel-tyre-kit", name: "CleanEdge Wheel & Tyre Kit", qty: "4 essentials", cost: 239.98, compareAtPrice: 395.96, salePrice: 379, badge: "WHEELS", image: "/images/cleanedge-bundle-deal.svg", description: "Includes: Shield Tyre Shine Silicone 500ml, Shield Mag Cleaner 500ml, Car Tire & Rim Cleaning Brush, and 10-Pack Black Microfiber Cloths." },
+  { id: "interior-glass-kit", name: "CleanEdge Interior & Glass Kit", qty: "5 essentials", cost: 319.98, compareAtPrice: 527.96, salePrice: 479, badge: "INTERIOR", image: "/images/cleanedge-bundle-deal.svg", description: "Includes: Shield Blade All Purpose Cleaner 750ml, Shield Waterless Auto Glass Cleaner 1L, 10-Pack Black Microfiber Cloths, 5-Piece Detail Brush Set, and Heavy-Duty Nitrile Gloves." },
+  { id: "wash-shine-kit", name: "CleanEdge Wash & Shine Kit", qty: "5 essentials", cost: 364.98, compareAtPrice: 586.21, salePrice: 549, badge: "MOST POPULAR", image: "/images/cleanedge-bundle-deal.svg", description: "Includes: Shield Car Shampoo & Conditioner 1L, Shield Snow Foam 1L, Detailing Cleaning Mitt, Car Drying Towel, and 10-Pack Microfiber Cloths." },
+  { id: "ultimate-detail-kit", name: "CleanEdge Ultimate Detail Kit", qty: "9 essentials", cost: 634.95, compareAtPrice: 1047.65, salePrice: 999, badge: "BEST VALUE", image: "/images/cleanedge-bundle-deal.svg", description: "Includes: Shield Car Shampoo & Conditioner 1L, Shield Snow Foam 1L, Shield Tyre Shine Silicone 500ml, Shield Mag Cleaner 500ml, Shield Blade All Purpose Cleaner 750ml, Car Drying Towel, Detailing Cleaning Mitt, Car Tire & Rim Cleaning Brush, and 100-Piece Microfiber Cleaning Cloth Roll." },
 ];
 const STANDARD_SHIPPING = 60;
 const FREE_SHIPPING_THRESHOLD = 1500;
@@ -169,14 +169,27 @@ export default function Home() {
         <p className="sectionLead">Don't know what to buy? We've bundled the essentials so you can get everything you need in one order.</p>
         <div className="bundleGrid">
           {bundles.map((bundle) => (
-            <article className="bundleCard" key={bundle.id}>
+            <article
+              className="bundleCard"
+              key={bundle.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`Add ${bundle.name} to cart`}
+              onClick={() => addToCart(bundle.id)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  addToCart(bundle.id);
+                }
+              }}
+            >
               <div className="bundleImage"><img src={bundle.image} alt={bundle.name} /></div>
               <div className="bundleBody">
                 <span className="bundleBadge">{bundle.badge}</span>
                 <h3>{bundle.name}</h3>
                 <p>{bundle.description}</p>
                 <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {bundle.compareAtPrice.toFixed(2)}</del></div>
-                <button className="add bundleAdd" onClick={() => addToCart(bundle.id)}>Add kit to cart</button>
+                <button className="add bundleAdd" onClick={(event) => { event.stopPropagation(); addToCart(bundle.id); }}>Add kit to cart</button>
               </div>
             </article>
           ))}
