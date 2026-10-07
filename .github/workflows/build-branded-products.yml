@@ -22,16 +22,15 @@ jobs:
           node-version: 22
 
       - name: Install image renderer
-        run: npm install --no-save sharp
+        run: python3 -m pip install --quiet pillow
 
       - name: Create baked product images
         run: |
-          node <<'NODE'
-          const sharp = require("sharp");
-          const fs = require("fs");
-          const path = require("path");
+          python3 <<'PY'
+          from PIL import Image, ImageDraw, ImageFont, ImageFilter
+          from pathlib import Path
 
-          const ids = [
+          ids = [
             "shield-shampoo-conditioner-1l",
             "shield-snow-foam-1l",
             "shield-xtreme-shampoo-500ml",
@@ -52,56 +51,69 @@ jobs:
             "shield-engine-cleaner-500ml",
             "shield-splash-n-dash-sponge",
             "shield-foam-applicator-pads-3"
-          ];
+          ]
 
-          const W = 1080;
-          const S = W / 1024;
-          const overlay = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${W}" viewBox="0 0 1024 1024">
-            <defs>
-              <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
-                <feDropShadow dx="7" dy="9" stdDeviation="7" flood-color="#000" flood-opacity=".72"/>
-              </filter>
-              <linearGradient id="label" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stop-color="#1d1d1d"/>
-                <stop offset=".55" stop-color="#0b0b0b"/>
-                <stop offset="1" stop-color="#050505"/>
-              </linearGradient>
-              <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#ff5a2b"/>
-                <stop offset="1" stop-color="#ef3d17"/>
-              </linearGradient>
-              <clipPath id="labelClip">
-                <path d="M337 302 Q345 296 357 296 H667 Q679 296 687 305 L682 488 Q681 500 668 502 H354 Q341 500 339 488 Z"/>
-              </clipPath>
-            </defs>
-            <g transform="scale(${S})" filter="url(#shadow)">
-              <path d="M337 302 Q345 296 357 296 H667 Q679 296 687 305 L682 488 Q681 500 668 502 H354 Q341 500 339 488 Z" fill="url(#label)" stroke="url(#orange)" stroke-width="7"/>
-              <g clip-path="url(#labelClip)">
-                <path d="M315 455 L710 395 L710 520 L315 520 Z" fill="#111" opacity=".55"/>
-                <path d="M360 461 H664" stroke="#ff4a1f" stroke-width="5"/>
-                <path d="M360 472 H664" stroke="#ff4a1f" stroke-width="2" opacity=".35"/>
-              </g>
-              <text x="512" y="329" text-anchor="middle" fill="#aaa49c" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="800" letter-spacing="4">PRO DETAILING</text>
-              <text x="512" y="385" text-anchor="middle" fill="#f7f2e9" font-family="Arial Black,Arial,sans-serif" font-size="30" font-weight="900" letter-spacing="2">CLEAN</text>
-              <text x="512" y="425" text-anchor="middle" fill="#ff4a1f" font-family="Arial Black,Arial,sans-serif" font-size="42" font-weight="900" letter-spacing="1">EDGE</text>
-              <circle cx="361" cy="344" r="5" fill="#ff4a1f"/>
-              <circle cx="663" cy="344" r="5" fill="#ff4a1f"/>
-            </g>
-          </svg>`;
+          root = Path("public/images/clean-products")
+          out = root / "branded"
+          out.mkdir(parents=True, exist_ok=True)
 
-          (async () => {
-            const outDir = "public/images/clean-products/branded";
-            fs.mkdirSync(outDir, { recursive: true });
-            for (const id of ids) {
-              await sharp(`public/images/clean-products/${id}.png`)
-                .composite([{ input: Buffer.from(overlay), blend: "over" }])
-                .png()
-                .toFile(path.join(outDir, `${id}.png`));
-            }
-          })().catch(err => { console.error(err); process.exit(1); });
-          NODE
+          bold = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+          regular = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 
-      - name: Commit baked images
+          for product_id in ids:
+              base = Image.open(root / f"{product_id}.png").convert("RGBA")
+              w, h = base.size
+
+              scale = min(w, h) / 1024
+              x0, y0 = int(337*scale), int(296*scale)
+              x1, y1 = int(687*scale), int(502*scale)
+              radius = max(10, int(12*scale))
+
+              shadow = Image.new("RGBA", base.size, (0, 0, 0, 0))
+              sd = ImageDraw.Draw(shadow)
+              sd.rounded_rectangle((x0+7*scale, y0+9*scale, x1+7*scale, y1+9*scale),
+                                   radius=radius, fill=(0,0,0,185))
+              shadow = shadow.filter(ImageFilter.GaussianBlur(max(2, int(7*scale))))
+              base = Image.alpha_composite(base, shadow)
+
+              label = Image.new("RGBA", base.size, (0,0,0,0))
+              d = ImageDraw.Draw(label)
+              d.rounded_rectangle((x0, y0, x1, y1), radius=radius,
+                                  fill=(8,8,8,245), outline=(255,74,31,255),
+                                  width=max(4, int(7*scale)))
+
+              # subtle lower panel and orange accent lines
+              d.polygon([(int(315*scale),int(455*scale)),
+                         (int(710*scale),int(395*scale)),
+                         (int(710*scale),int(520*scale)),
+                         (int(315*scale),int(520*scale))], fill=(17,17,17,140))
+              d.line((int(360*scale),int(461*scale),int(664*scale),int(461*scale)),
+                     fill=(255,74,31,255), width=max(3,int(5*scale)))
+              d.line((int(360*scale),int(472*scale),int(664*scale),int(472*scale)),
+                     fill=(255,74,31,90), width=max(1,int(2*scale)))
+
+              f_small = ImageFont.truetype(regular, max(10,int(13*scale)))
+              f_clean = ImageFont.truetype(bold, max(20,int(30*scale)))
+              f_edge = ImageFont.truetype(bold, max(26,int(42*scale)))
+
+              def centered(text, y, font, fill, spacing=0):
+                  bbox = d.textbbox((0,0), text, font=font)
+                  tw = bbox[2] - bbox[0]
+                  d.text(((w-tw)//2, int(y*scale)), text, font=font, fill=fill, stroke_width=0)
+
+              centered("PRO DETAILING", 312, f_small, (170,164,156,255))
+              centered("CLEAN", 365, f_clean, (247,242,233,255))
+              centered("EDGE", 404, f_edge, (255,74,31,255))
+              d.ellipse((int(356*scale),int(339*scale),int(366*scale),int(349*scale)), fill=(255,74,31,255))
+              d.ellipse((int(658*scale),int(339*scale),int(668*scale),int(349*scale)), fill=(255,74,31,255))
+
+              base = Image.alpha_composite(base, label)
+              base.save(out / f"{product_id}.png", "PNG", optimize=True)
+
+          print("Created", len(ids), "baked product PNGs")
+          PY
+
+      - name: Commit baked images/
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
