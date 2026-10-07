@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="7" dy="9" stdDeviation="7" flood-color="#000" flood-opacity=".72"/></filter>
+    <linearGradient id="label" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d1d1d"/><stop offset=".55" stop-color="#0b0b0b"/><stop offset="1" stop-color="#050505"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5a2b"/><stop offset="1" stop-color="#ef3d17"/></linearGradient>
+    <clipPath id="labelClip"><path d="M337 302 Q345 296 357 296 H667 Q679 296 687 305 L682 488 Q681 500 668 502 H354 Q341 500 339 488 Z"/></clipPath>
+  </defs>
+  <rect width="1024" height="1024" fill="#101010"/>
+  <image href="../shield-mag-cleaner-500ml.png" x="0" y="0" width="1024" height="1024" preserveAspectRatio="xMidYMid meet"/>
+  <g filter="url(#shadow)">
+    <path d="M337 302 Q345 296 357 296 H667 Q679 296 687 305 L682 488 Q681 500 668 502 H354 Q341 500 339 488 Z" fill="url(#label)" stroke="url(#orange)" stroke-width="7"/>
+    <g clip-path="url(#labelClip)">
+      <path d="M315 455 L710 395 L710 520 L315 520 Z" fill="#111" opacity=".55"/>
+      <path d="M360 461 H664" stroke="#ff4a1f" stroke-width="5"/>
+      <path d="M360 472 H664" stroke="#ff4a1f" stroke-width="2" opacity=".35"/>
+    </g>
+    <text x="512" y="329" text-anchor="middle" fill="#aaa49c" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="800" letter-spacing="4">PRO DETAILING</text>
+    <text x="512" y="385" text-anchor="middle" fill="#f7f2e9" font-family="Arial Black,Arial,sans-serif" font-size="30" font-weight="900" letter-spacing="2">CLEAN</text>
+    <text x="512" y="425" text-anchor="middle" fill="#ff4a1f" font-family="Arial Black,Arial,sans-serif" font-size="42" font-weight="900" letter-spacing="1">EDGE</text>
+    <circle cx="361" cy="344" r="5" fill="#ff4a1f"/>
+    <circle cx="663" cy="344" r="5" fill="#ff4a1f"/>
+  </g>
+</svg>
