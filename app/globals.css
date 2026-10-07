@@ -37,8 +37,8 @@
 .secondaryCta{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border:1px solid rgba(0,0,0,.22);text-decoration:none;color:inherit;font-weight:700}
 .sectionLead{max-width:680px;margin:-18px 0 30px;opacity:.72;line-height:1.6}
 .bundleGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-.bundleCard{border:1px solid #2b2b2b;background:#101010;overflow:hidden;display:flex;flex-direction:column;border-radius:5px;box-shadow:0 14px 34px rgba(0,0,0,.22)}
-.bundleImage{aspect-ratio:1.55;overflow:hidden;background:#111;border-bottom:1px solid #292929}
+.bundleCard{cursor:pointer;border:1px solid #2b2b2b;background:#101010;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;}overflow:hidden;display:flex;flex-direction:column;border-radius:5px;box-shadow:0 14px 34px rgba(0,0,0,.22)}
+.bundleCard:hover{transform:translateY(-3px);border-color:#5a4a27;box-shadow:0 18px 38px rgba(0,0,0,.3)}.bundleCard:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.bundleImage{aspect-ratio:1.55;overflow:hidden;background:#111;border-bottom:1px solid #292929}
 .bundleImage img{width:100%;height:100%;object-fit:cover}
 .bundleBody{padding:20px;background:#101010;color:#f4f0e9}
 .bundleBadge{font-size:11px;letter-spacing:.12em;font-weight:800;color:var(--accent);opacity:1}
