@@ -90,7 +90,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
 
       <section className="shell productDetail">
         <div className="productGallery">
-          <div className="productMainImage"><img src={product.image} alt={product.name} className="productMainImageAsset" /></div>
+          <div className="productMainImage"><span className="productStickerOnItem productStickerDetail" aria-hidden="true"><b>CLEAN</b><strong>EDGE</strong><small>PRO DETAILING</small></span><img src={product.image} alt={product.name} className="productMainImageAsset" /></div>
           <div className="productThumb"><img src={product.image} alt="" className="productThumbAsset" /></div>
         </div>
 
