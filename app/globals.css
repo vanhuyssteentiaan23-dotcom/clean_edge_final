@@ -76,14 +76,17 @@
 .productMainImage,.productThumb,.productModalImage,.cartThumb{background-color:#f3f0ea !important}
 
 
-/* Final product composite: dark CleanEdge garage + bright centre stage for white-source product photos */
+
+
+/* CleanEdge product-card background: the supplied garage artwork is the backdrop; real product photos sit above it */
 .photoLink,.productImageCrop,.productMainImage,.productThumb,.cartThumb,.productModalImage{
-  background-image:radial-gradient(ellipse 58% 72% at 50% 58%,rgba(250,247,241,.98) 0%,rgba(250,247,241,.92) 27%,rgba(236,231,222,.62) 47%,rgba(10,10,10,.05) 70%,rgba(0,0,0,.25) 100%),var(--product-bg) !important;
+  background-image:var(--product-bg) !important;
   background-size:cover !important;
-  background-position:center !important;
+  background-position:left center !important;
   background-repeat:no-repeat !important;
   background-color:#090909 !important;
 }
+.productImageCrop{isolation:isolate !important}
 .productCardImage,.productMainImageAsset,.productThumbAsset{
   mix-blend-mode:multiply !important;
   filter:none !important;
@@ -91,5 +94,3 @@
   position:relative !important;
   z-index:1 !important;
 }
-.productImageCrop{isolation:isolate !important;background-color:transparent !important}
-.photoLink{background-color:transparent !important}
