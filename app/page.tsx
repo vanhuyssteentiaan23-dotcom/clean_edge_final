@@ -169,28 +169,17 @@ export default function Home() {
         <p className="sectionLead">Don't know what to buy? We've bundled the essentials so you can get everything you need in one order.</p>
         <div className="bundleGrid">
           {bundles.map((bundle) => (
-            <article
-              className="bundleCard"
-              key={bundle.id}
-              role="button"
-              tabIndex={0}
-              aria-label={`Add ${bundle.name} to cart`}
-              onClick={() => addToCart(bundle.id)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  addToCart(bundle.id);
-                }
-              }}
-            >
-              <div className="bundleImage"><img src={bundle.image} alt={bundle.name} /></div>
-              <div className="bundleBody">
-                <span className="bundleBadge">{bundle.badge}</span>
-                <h3>{bundle.name}</h3>
-                <p>{bundle.description}</p>
-                <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {bundle.compareAtPrice.toFixed(2)}</del></div>
-                <button className="add bundleAdd" onClick={(event) => { event.stopPropagation(); addToCart(bundle.id); }}>Add kit to cart</button>
-              </div>
+            <article className="bundleCard" key={bundle.id}>
+              <Link className="bundleCardLink" href={`/product/${bundle.id}`} aria-label={`View ${bundle.name}`}>
+                <div className="bundleImage"><img src={bundle.image} alt={bundle.name} /></div>
+                <div className="bundleBody">
+                  <span className="bundleBadge">{bundle.badge}</span>
+                  <h3>{bundle.name}</h3>
+                  <p>{bundle.description}</p>
+                  <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {bundle.compareAtPrice.toFixed(2)}</del></div>
+                </div>
+              </Link>
+              <div className="bundleAction"><button className="add bundleAdd" onClick={() => addToCart(bundle.id)}>Add kit to cart</button></div>
             </article>
           ))}
         </div>
