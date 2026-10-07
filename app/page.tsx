@@ -34,6 +34,9 @@ const microfiberRollColors = ["Pink", "Grey", "Blue"];
 const sellingPrice = (cost: number) => cost * 1.65;
 const productPrice = (product: { id: string; cost: number; salePrice?: number }) => product.salePrice ?? (product.id === "microfiber-5" ? 50 : sellingPrice(product.cost));
 
+const STANDARD_SHIPPING = 60;
+const FREE_SHIPPING_THRESHOLD = 1500;
+
 const bundles = [
   { id: "wheel-tyre-kit", name: "CleanEdge Wheel & Tyre Kit", qty: "4 essentials", cost: 239.98, compareAtPrice: 395.96, salePrice: 379, badge: "WHEELS", image: "/images/cleanedge-bundle-deal.svg", description: "Includes: Shield Tyre Shine Silicone 500ml, Shield Mag Cleaner 500ml, Car Tire & Rim Cleaning Brush, and 10-Pack Black Microfiber Cloths." },
   { id: "interior-glass-kit", name: "CleanEdge Interior & Glass Kit", qty: "5 essentials", cost: 319.98, compareAtPrice: 527.96, salePrice: 479, badge: "INTERIOR", image: "/images/cleanedge-bundle-deal.svg", description: "Includes: Shield Blade All Purpose Cleaner 750ml, Shield Waterless Auto Glass Cleaner 1L, 10-Pack Black Microfiber Cloths, 5-Piece Detail Brush Set, and Heavy-Duty Nitrile Gloves." },
@@ -87,7 +90,8 @@ export default function Home() {
   );
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cartItems.reduce((sum, item) => sum + productPrice(item) * item.quantity, 0);
-  const cartTotal = cartSubtotal;
+  const shipping = cartSubtotal >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING;
+  const cartTotal = cartSubtotal + shipping;
 
   const addToCart = (id: string, color?: string) => {
     if ((id === "touch-up-pen" || id === "microfiber-roll") && color) setCartColors((current) => ({ ...current, [id]: color }));
@@ -153,7 +157,7 @@ export default function Home() {
           <h1>Your car.<br/><em>Properly clean.</em></h1>
           <p>Premium-feel detailing gear without the premium price. Start with a CleanEdge kit, then build your garage with products you actually use.</p>
           <div className="heroActions"><a className="cta" href="#kits">Shop detailing kits</a><a className="secondaryCta" href="#shop">Shop individual products</a></div>
-          <div className="shippingBanner">SECURE YOCO CHECKOUT</div>
+          <div className="shippingBanner">R60 STANDARD COURIER <span>•</span> FREE SHIPPING OVER R1,500 <span>•</span> SECURE YOCO CHECKOUT</div>
         </div>
       </header>
 
@@ -252,7 +256,9 @@ export default function Home() {
                   ))}
                 </div>
                 <div className="cartSummary"><span>Subtotal</span><strong>R {cartSubtotal.toFixed(2)}</strong></div>
+                <div className="cartSummary"><span>Shipping</span><strong>{shipping === 0 ? "FREE" : `R ${shipping.toFixed(2)}`}</strong></div>
                 <div className="cartSummary cartGrandTotal"><span>Total</span><strong>R {cartTotal.toFixed(2)}</strong></div>
+                <div className="shippingProgress">{shipping === 0 ? <><strong>Free shipping unlocked ✓</strong><span>Your order qualifies for free delivery.</span></> : <><strong>Add R {(FREE_SHIPPING_THRESHOLD - cartSubtotal).toFixed(2)} for free shipping</strong><div className="shippingTrack"><i style={{ width: `${Math.min(100, (cartSubtotal / FREE_SHIPPING_THRESHOLD) * 100)}%` }} /></div><span>Standard courier is R60 until you reach R1,500.</span></>}</div>
                 <div className="customerFields">
                   <label>Name <span>(optional)</span><input value={customerName} onChange={(event) => setCustomerName(event.target.value)} placeholder="Your name" /></label>
                   <label>Email <span>(required)</span><input type="email" value={customerEmail} onChange={(event) => setCustomerEmail(event.target.value)} placeholder="you@example.com" autoComplete="email" /></label>
