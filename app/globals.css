@@ -46,8 +46,8 @@
 .bundleBody{padding:20px;background:#101010;color:#f4f0e9;display:flex;flex-direction:column;flex:1}
 .bundleBadge{font-size:11px;letter-spacing:.12em;font-weight:800;color:var(--accent);opacity:1}
 .bundleBody h3{font-size:22px;line-height:1.05;margin:9px 0 8px;color:#f4f0e9}
-.bundleBody p{font-size:13px;line-height:1.5;color:#aaa39a;opacity:1;min-height:108px}
-.bundlePrice{display:flex;gap:10px;align-items:baseline;margin:16px 0 auto;padding-top:10px}
+.bundleBody p{font-size:13px;line-height:1.5;color:#aaa39a;opacity:1;min-height:0;flex:1}
+.bundlePrice{display:flex;gap:10px;align-items:baseline;margin:16px 0 0;padding-top:10px}
 .bundlePrice strong{font-size:24px;color:#fff}
 .bundlePrice del{opacity:1;color:#6f6a64;font-size:12px}
 .bundleAction{padding:0 20px 20px;background:#101010}
