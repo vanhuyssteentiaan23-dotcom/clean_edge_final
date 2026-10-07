@@ -235,3 +235,41 @@
     max-width:145px !important;
   }
 }
+
+
+/* FINAL FIX: force the physical-looking sticker above the product image layer. */
+.productImageCrop{z-index:1 !important;}
+.productStickerOnItem{
+  z-index:50 !important;
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  top:52% !important;
+  left:50% !important;
+  width:42% !important;
+  min-width:100px !important;
+  max-width:165px !important;
+  aspect-ratio:1.65 !important;
+  background:linear-gradient(145deg,#ff7043 0%,#ff4a1f 55%,#c92f12 100%) !important;
+  border:2px solid #080808 !important;
+  box-shadow:0 3px 0 rgba(255,255,255,.45) inset,0 -5px 10px rgba(0,0,0,.22) inset,6px 7px 0 rgba(0,0,0,.6) !important;
+  transform:translate(-50%,-50%) rotate(-2deg) !important;
+}
+.productStickerOnItem b{font-size:13px !important;}
+.productStickerOnItem strong{font-size:18px !important;}
+.productStickerOnItem small{font-size:6px !important;letter-spacing:.18em !important;}
+.productStickerBundleOnItem{
+  z-index:50 !important;
+  width:34% !important;
+  min-width:90px !important;
+  max-width:145px !important;
+  top:50% !important;
+}
+.bundleImage{position:relative !important;}
+.bundleImage img{position:relative !important;z-index:1 !important;}
+@media(max-width:700px){
+  .productStickerOnItem{width:42% !important;min-width:88px !important;max-width:135px !important;}
+  .productStickerOnItem b{font-size:11px !important;}
+  .productStickerOnItem strong{font-size:15px !important;}
+  .productStickerOnItem small{font-size:5px !important;}
+}
