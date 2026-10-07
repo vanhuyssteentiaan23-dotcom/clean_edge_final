@@ -104,3 +104,8 @@
   opacity:1 !important;
   filter:none !important;
 }
+
+
+/* Legacy microfiber photography: remove white source backgrounds while keeping the real product visible over the dark garage stage. */
+.productCardImageBlend{mix-blend-mode:multiply !important;}
+.photoLink.productPhotoDark{background:transparent !important;}
