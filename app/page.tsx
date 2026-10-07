@@ -172,7 +172,7 @@ export default function Home() {
           {bundles.map((bundle) => (
             <article className="bundleCard" key={bundle.id}>
               <Link className="bundleCardLink" href={`/product/${bundle.id}`} aria-label={`View ${bundle.name}`}>
-                <div className="bundleImage"><span className="productSticker productStickerBundle">CLEANEDGE</span><img src={bundle.image} alt={bundle.name} /></div>
+                <div className="bundleImage"><img src={bundle.image} alt={bundle.name} /></div>
                 <div className="bundleBody">
                   <span className="bundleBadge">{bundle.badge}</span>
                   <h3>{bundle.name}</h3>
@@ -203,7 +203,7 @@ export default function Home() {
           {sortedProducts.map((p) => (
             <article className="card" key={p.id}>
               <Link className="photo photoLink" href={`/product/${p.id}`} aria-label={`View ${p.name}`}>
-                <span className="productSticker">CLEANEDGE</span>
+                <span className="productStickerOnItem" aria-hidden="true"><b>CLEAN</b><strong>EDGE</strong><small>PRO DETAILING</small></span>
                 <span className="productImageCrop"><img src={p.image} alt={p.name} className={`productCardImage ${p.id === "microfiber-roll" || p.id === "microfiber-black-10" ? "productCardImageBlend" : ""}`} /></span>
                 <span className="photoHint">View product</span>
               </Link>
