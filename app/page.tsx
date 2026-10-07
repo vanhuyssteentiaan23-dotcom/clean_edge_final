@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 const products = [
-  { id: "microfiber-roll", category: "Microfiber & Cloths", name: "100-Piece Microfiber Cleaning Cloth Roll", qty: "100 pcs", cost: 70, image: "/images/products/microfiber-roll.svg", description: "Extra-large reusable microfiber cleaning cloth roll with tear-away towels. Soft, absorbent and suitable for car detailing, glass, interiors and everyday cleaning." },
+  { id: "microfiber-roll", category: "Microfiber & Cloths", name: "100-Piece Microfiber Cleaning Cloth Roll", qty: "100 pcs", cost: 70, image: "https://cdn.shopify.com/s/files/1/0944/5802/0125/files/81tO-W03DoL._AC_SX679.jpg?v=1758372242", description: "Extra-large reusable microfiber cleaning cloth roll with tear-away towels. Soft, absorbent and suitable for car detailing, glass, interiors and everyday cleaning." },
   { id: "microfiber-5", category: "Microfiber & Cloths", name: "5-Pack Microfiber Cloths", qty: "5 pcs", cost: 40, image: "/images/microfiber-5.jpg", description: "1200-wash ultra-fine microfiber cleaning cloths. High-performance, super absorbent and streak-free, chemical-free and ideal for car washing and jewelry care. Random colour." },
-  { id: "microfiber-black-10", category: "Microfiber & Cloths", name: "10-Pack Black Microfiber Cloths", qty: "10 pcs", cost: 50, image: "/images/microfiber-black-10.jpg", description: "Ultra-soft, absorbent black microfiber cleaning cloths for housekeeping. Lint-free, reusable and washable for everyday cleaning." },
+  { id: "microfiber-black-10", category: "Microfiber & Cloths", name: "10-Pack Black Microfiber Cloths", qty: "10 pcs", cost: 50, image: "https://detailease.co.za/cdn/shop/files/DE_Microfiber_Cloths_Grey_2026_Pack_10.jpg?v=1771861957", description: "Ultra-soft, absorbent black microfiber cleaning cloths for housekeeping. Lint-free, reusable and washable for everyday cleaning." },
   { id: "drying-towel", category: "Tools & Accessories", name: "Car Drying Towel", qty: "1 pc", cost: 120, image: "/images/drying-towel.jpg", description: "Full-size SUV and truck drying towel with double-sided microfiber, high absorbency and a scratch-resistant, machine-washable design." },
   { id: "cleaning-mitt", category: "Tools & Accessories", name: "Detailing Cleaning Mitt", qty: "1 pc", cost: 60, image: "/images/cleaning-mitt.jpg", description: "Chenille microfiber car wash mitt with thick double-sided plush material. Designed to help clean without scratching." },
   { id: "touch-up-pen", category: "Paint & Protection", name: "Automotive Paint Touch-Up Pen", qty: "Multiple colours", cost: 40, image: "/images/touch-up-pen.jpg", description: "Car paint repair pen for scratch and rust touch-up. Supplied with water sandpaper. Choose your colour before adding to cart." },
@@ -209,7 +209,7 @@ export default function Home() {
           {sortedProducts.map((p) => (
             <article className="card" key={p.id}>
               <Link className="photo photoLink" href={`/product/${p.id}`} aria-label={`View ${p.name}`}>
-                <span className="productImageCrop"><img src={p.image} alt={p.name} className="productCardImage" /></span>
+                <span className="productImageCrop"><img src={p.image} alt={p.name} className={`productCardImage ${p.id === "microfiber-roll" || p.id === "microfiber-black-10" ? "productCardImageBlend" : ""}`} /></span>
                 <span className="photoHint">View product</span>
               </Link>
               <div className="body">
