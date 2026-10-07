@@ -164,7 +164,7 @@ export default function Home() {
           <div className="eyebrow">South African automotive detailing essentials</div>
           <h1>Your car.<br/><em>Properly clean.</em></h1>
           <p>Premium-feel detailing gear without the premium price. Start with a CleanEdge kit, then build your garage with products you actually use.</p>
-          <div className="heroActions"><a className="cta" href="#kits">Shop detailing kits</a><a className="secondaryCta" href="#shop">Shop individual products</a></div>
+          <div className="heroActions"><a className="cta" href="#kits">Shop detailing kits</a></div>
           <div className="shippingBanner">R60 STANDARD COURIER <span>•</span> FREE SHIPPING OVER R1,500 <span>•</span> SECURE YOCO CHECKOUT</div>
         </div>
       </header>
@@ -186,37 +186,6 @@ export default function Home() {
                 <p>{bundle.description}</p>
                 <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {bundle.compareAtPrice.toFixed(2)}</del><small>Save R {(bundle.compareAtPrice - bundle.salePrice).toFixed(2)}</small></div>
                 <button className="add bundleAdd" onClick={() => addToCart(bundle.id)}>Add kit to cart</button>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="shop" className="section shell">
-        <div className="sectionhead">
-          <div><div className="eyebrow">Build your garage</div><h2>Individual detailing gear</h2></div>
-          <label className="productSort">
-            <span>Sort products</span>
-            <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)} aria-label="Filter by category"><option value="All">All categories</option><option value="Wash & Foam">Wash & Foam</option><option value="Wheels & Tyres">Wheels & Tyres</option><option value="Paint & Protection">Paint & Protection</option><option value="Cleaning">Cleaning</option><option value="Accessories">Accessories</option><option value="Microfiber & Cloths">Microfiber & Cloths</option><option value="Tools & Accessories">Tools & Accessories</option><option value="Tools & Kits">Tools & Kits</option></select>
-            <select value={sortOption} onChange={(event) => setSortOption(event.target.value as SortOption)} aria-label="Sort products">
-              <option value="best">Featured</option>
-              <option value="high">Price: Highest to Lowest</option>
-              <option value="low">Price: Lowest to Highest</option>
-            </select>
-          </label>
-        </div>
-        <div className="grid">
-          {sortedProducts.map((p) => (
-            <article className="card" key={p.id}>
-              <Link className="photo photoLink" href={`/product/${p.id}`} aria-label={`View ${p.name}`}>
-                <span className="productImageCrop"><img src={p.image} alt={p.name} className={`productCardImage ${p.id === "microfiber-roll" || p.id === "microfiber-black-10" ? "productCardImageBlend" : ""}`} /></span>
-                <span className="photoHint">View product</span>
-              </Link>
-              <div className="body">
-                <div className="qty">{p.category ? `${p.category} · ` : ""}{p.qty}</div>
-                <h3>{p.name}</h3>
-                <div className="price">{p.id === "microfiber-5" ? <><span>R 50.00</span> <del>R 66.00</del></> : <>R {productPrice(p).toFixed(2)}</>}</div>
-                <button className="add" onClick={() => addToCart(p.id, p.id === "microfiber-roll" ? "Grey" : undefined)}>Add to cart</button>
               </div>
             </article>
           ))}
