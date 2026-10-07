@@ -175,7 +175,7 @@ export default function Home() {
                 <span className="bundleBadge">{bundle.badge}</span>
                 <h3>{bundle.name}</h3>
                 <p>{bundle.description}</p>
-                <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {bundle.compareAtPrice.toFixed(2)}</del><small>Save R {(bundle.compareAtPrice - bundle.salePrice).toFixed(2)}</small></div>
+                <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {bundle.compareAtPrice.toFixed(2)}</del></div>
                 <button className="add bundleAdd" onClick={() => addToCart(bundle.id)}>Add kit to cart</button>
               </div>
             </article>
