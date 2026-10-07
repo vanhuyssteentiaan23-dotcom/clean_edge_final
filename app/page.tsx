@@ -4,15 +4,6 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
 const products = [
-  { id: "microfiber-roll", category: "Microfiber & Cloths", name: "100-Piece Microfiber Cleaning Cloth Roll", qty: "100 pcs", cost: 70, image: "https://cdn.shopify.com/s/files/1/0944/5802/0125/files/81tO-W03DoL._AC_SX679.jpg?v=1758372242", description: "Extra-large reusable microfiber cleaning cloth roll with tear-away towels. Soft, absorbent and suitable for car detailing, glass, interiors and everyday cleaning." },
-  { id: "microfiber-5", category: "Microfiber & Cloths", name: "5-Pack Microfiber Cloths", qty: "5 pcs", cost: 40, image: "/images/microfiber-5.jpg", description: "1200-wash ultra-fine microfiber cleaning cloths. High-performance, super absorbent and streak-free, chemical-free and ideal for car washing and jewelry care. Random colour." },
-  { id: "microfiber-black-10", category: "Microfiber & Cloths", name: "10-Pack Black Microfiber Cloths", qty: "10 pcs", cost: 50, image: "https://detailease.co.za/cdn/shop/files/DE_Microfiber_Cloths_Grey_2026_Pack_10.jpg?v=1771861957", description: "Ultra-soft, absorbent black microfiber cleaning cloths for housekeeping. Lint-free, reusable and washable for everyday cleaning." },
-  { id: "drying-towel", category: "Tools & Accessories", name: "Car Drying Towel", qty: "1 pc", cost: 120, image: "/images/drying-towel.jpg", description: "Full-size SUV and truck drying towel with double-sided microfiber, high absorbency and a scratch-resistant, machine-washable design." },
-  { id: "cleaning-mitt", category: "Tools & Accessories", name: "Detailing Cleaning Mitt", qty: "1 pc", cost: 60, image: "/images/cleaning-mitt.jpg", description: "Chenille microfiber car wash mitt with thick double-sided plush material. Designed to help clean without scratching." },
-  { id: "touch-up-pen", category: "Paint & Protection", name: "Automotive Paint Touch-Up Pen", qty: "Multiple colours", cost: 40, image: "/images/touch-up-pen.jpg", description: "Car paint repair pen for scratch and rust touch-up. Supplied with water sandpaper. Choose your colour before adding to cart." },
-  { id: "nitrile-gloves", category: "Tools & Accessories", name: "Heavy-Duty Nitrile Gloves", qty: "Box", cost: 105, image: "/images/nitrile-gloves.jpg", description: "Black Diamond textured nitrile gloves with thick construction, high elasticity and an easy-to-wear fit for demanding cleaning work." },
-  { id: "tire-rim-brush", category: "Wheels & Tyres", name: "Car Tire & Rim Cleaning Brush", qty: "1 pc", cost: 50, image: "/images/tire-rim-brush.jpg", description: "Covered hub brush with wax-coated crystal bead foam for smooth tire brushing, interior crevices, edges and corners. PP material." },
-  { id: "car-wash-kit", category: "Tools & Kits", name: "16-Piece Car Wash Kit", qty: "16 pcs", cost: 300, image: "/images/car-wash-kit.jpg", description: "16-piece car cleaning tool set with various detail brushes for air-conditioning vents, seat gaps and other car and motorcycle cleaning jobs." },
 ];
 
 const newProducts = [
@@ -164,7 +155,7 @@ export default function Home() {
           <div className="eyebrow">South African automotive detailing essentials</div>
           <h1>Your car.<br/><em>Properly clean.</em></h1>
           <p>Premium-feel detailing gear without the premium price. Start with a CleanEdge kit, then build your garage with products you actually use.</p>
-          <div className="heroActions"><a className="cta" href="#kits">Shop detailing kits</a></div>
+          <div className="heroActions"><a className="cta" href="#kits">Shop detailing kits</a><a className="secondaryCta" href="#shop">Shop individual products</a></div>
           <div className="shippingBanner">R60 STANDARD COURIER <span>•</span> FREE SHIPPING OVER R1,500 <span>•</span> SECURE YOCO CHECKOUT</div>
         </div>
       </header>
@@ -186,6 +177,37 @@ export default function Home() {
                 <p>{bundle.description}</p>
                 <div className="bundlePrice"><strong>R {bundle.salePrice.toFixed(2)}</strong><del>R {bundle.compareAtPrice.toFixed(2)}</del><small>Save R {(bundle.compareAtPrice - bundle.salePrice).toFixed(2)}</small></div>
                 <button className="add bundleAdd" onClick={() => addToCart(bundle.id)}>Add kit to cart</button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="shop" className="section shell">
+        <div className="sectionhead">
+          <div><div className="eyebrow">Build your garage</div><h2>Individual detailing gear</h2></div>
+          <label className="productSort">
+            <span>Sort products</span>
+            <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)} aria-label="Filter by category"><option value="All">All categories</option><option value="Wash & Foam">Wash & Foam</option><option value="Wheels & Tyres">Wheels & Tyres</option><option value="Paint & Protection">Paint & Protection</option><option value="Cleaning">Cleaning</option><option value="Accessories">Accessories</option><option value="Microfiber & Cloths">Microfiber & Cloths</option><option value="Tools & Accessories">Tools & Accessories</option><option value="Tools & Kits">Tools & Kits</option></select>
+            <select value={sortOption} onChange={(event) => setSortOption(event.target.value as SortOption)} aria-label="Sort products">
+              <option value="best">Featured</option>
+              <option value="high">Price: Highest to Lowest</option>
+              <option value="low">Price: Lowest to Highest</option>
+            </select>
+          </label>
+        </div>
+        <div className="grid">
+          {sortedProducts.map((p) => (
+            <article className="card" key={p.id}>
+              <Link className="photo photoLink" href={`/product/${p.id}`} aria-label={`View ${p.name}`}>
+                <span className="productImageCrop"><img src={p.image} alt={p.name} className={`productCardImage ${p.id === "microfiber-roll" || p.id === "microfiber-black-10" ? "productCardImageBlend" : ""}`} /></span>
+                <span className="photoHint">View product</span>
+              </Link>
+              <div className="body">
+                <div className="qty">{p.category ? `${p.category} · ` : ""}{p.qty}</div>
+                <h3>{p.name}</h3>
+                <div className="price">{p.id === "microfiber-5" ? <><span>R 50.00</span> <del>R 66.00</del></> : <>R {productPrice(p).toFixed(2)}</>}</div>
+                <button className="add" onClick={() => addToCart(p.id, p.id === "microfiber-roll" ? "Grey" : undefined)}>Add to cart</button>
               </div>
             </article>
           ))}
