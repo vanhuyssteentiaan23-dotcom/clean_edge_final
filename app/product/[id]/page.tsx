@@ -41,6 +41,13 @@ const newProducts = [
   { id:"shield-foam-applicator-pads-3", name:"Shield Foam Applicator Pads 3-Pack", qty:"3 pcs", cost:54.99, category:"Accessories", image:"/images/clean-products/shield-foam-applicator-pads-3.png", description:"Three soft foam applicator pads for cleaning, detailing and applying waxes or dressings by hand." }
 ];
 
+const bundles = [
+  { id:"wheel-tyre-kit", name:"CleanEdge Wheel & Tyre Kit", qty:"4 essentials", cost:239.98, compareAtPrice:395.96, salePrice:379, badge:"WHEELS", image:"/images/cleanedge-bundle-deal.svg", description:"Includes: Shield Tyre Shine Silicone 500ml, Shield Mag Cleaner 500ml, Car Tire & Rim Cleaning Brush, and 10-Pack Black Microfiber Cloths." },
+  { id:"interior-glass-kit", name:"CleanEdge Interior & Glass Kit", qty:"5 essentials", cost:319.98, compareAtPrice:527.96, salePrice:479, badge:"INTERIOR", image:"/images/cleanedge-bundle-deal.svg", description:"Includes: Shield Blade All Purpose Cleaner 750ml, Shield Waterless Auto Glass Cleaner 1L, 10-Pack Black Microfiber Cloths, 5-Piece Detail Brush Set, and Heavy-Duty Nitrile Gloves." },
+  { id:"wash-shine-kit", name:"CleanEdge Wash & Shine Kit", qty:"5 essentials", cost:364.98, compareAtPrice:586.21, salePrice:549, badge:"MOST POPULAR", image:"/images/cleanedge-bundle-deal.svg", description:"Includes: Shield Car Shampoo & Conditioner 1L, Shield Snow Foam 1L, Detailing Cleaning Mitt, Car Drying Towel, and 10-Pack Microfiber Cloths." },
+  { id:"ultimate-detail-kit", name:"CleanEdge Ultimate Detail Kit", qty:"9 essentials", cost:634.95, compareAtPrice:1047.65, salePrice:999, badge:"BEST VALUE", image:"/images/cleanedge-bundle-deal.svg", description:"Includes: Shield Car Shampoo & Conditioner 1L, Shield Snow Foam 1L, Shield Tyre Shine Silicone 500ml, Shield Mag Cleaner 500ml, Shield Blade All Purpose Cleaner 750ml, Car Drying Towel, Detailing Cleaning Mitt, Car Tire & Rim Cleaning Brush, and 100-Piece Microfiber Cleaning Cloth Roll." },
+];
+
 const touchUpColors = ["Silvery", "Grey", "Red", "Blue", "Black", "White", "Pearl White", "Varnish"];
 const microfiberRollColors = ["Pink", "Grey", "Blue"];
 const sellingPrice = (cost: number, salePrice?: number) => salePrice ?? cost * 1.65;
@@ -48,7 +55,7 @@ const productPrice = (product: { cost: number; salePrice?: number }) => product.
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const product = [...products, ...newProducts].find((item) => item.id === id);
+  const product = [...products, ...newProducts, ...bundles].find((item) => item.id === id);
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("Black");
   const [added, setAdded] = useState(false);
