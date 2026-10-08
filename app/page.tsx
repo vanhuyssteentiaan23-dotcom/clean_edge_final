@@ -204,7 +204,6 @@ export default function Home() {
             <article className="card" key={p.id}>
               <Link className="photo photoLink" href={`/product/${p.id}`} aria-label={`View ${p.name}`}>
                 <span className="productImageCrop"><img src={p.image} alt={p.name} className={`productCardImage ${p.id === "microfiber-roll" || p.id === "microfiber-black-10" ? "productCardImageBlend" : ""}`} /></span>
-                <span className="photoHint">View product</span>
               </Link>
               <div className="body">
                 <div className="qty">{p.category ? `${p.category} · ` : ""}{p.qty}</div>
