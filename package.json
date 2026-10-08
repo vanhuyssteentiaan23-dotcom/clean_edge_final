@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/extract-images.cjs",
+    "prebuild": "node scripts/extract-images.cjs && node scripts/build-branded-products.cjs",
     "build": "next build",
     "start": "next start"
   },
