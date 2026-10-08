@@ -78,23 +78,28 @@ async function buildBrandedImage(id) {
   const output = path.join(brandedDir, id + ".png");
   if (!fs.existsSync(input)) return;
 
+  const metadata = await sharp(input).metadata();
+  const canvasWidth = metadata.width;
+  const canvasHeight = metadata.height;
+  if (!canvasWidth || !canvasHeight) return;
+
   const bounds = await findAlphaBounds(input);
   if (!bounds) return;
 
-  // Small secondary label: deliberately much smaller than the bottle's existing Shield label.
+  // Small secondary label: much smaller than the bottle's existing Shield label.
   const labelWidth = Math.max(120, Math.round(bounds.width * 0.46));
   const labelHeight = Math.max(38, Math.round(bounds.height * 0.13));
-  const x = Math.round(bounds.minX + (bounds.width - labelWidth) / 2);
-  const y = Math.round(bounds.minY + bounds.height * (labelY[id] ?? 0.46));
+  const x = Math.max(0, Math.round(bounds.minX + (bounds.width - labelWidth) / 2));
+  const y = Math.max(0, Math.min(canvasHeight - labelHeight, Math.round(bounds.minY + bounds.height * (labelY[id] ?? 0.46))));
 
   const label = await sharp(Buffer.from(cleanEdgeLabelSvg(labelWidth, labelHeight)))
     .png()
     .toBuffer();
 
-  const clippedLabel = await sharp({
+  const labelCanvas = await sharp({
     create: {
-      width: 1400,
-      height: 1400,
+      width: canvasWidth,
+      height: canvasHeight,
       channels: 4,
       background: { r: 0, g: 0, b: 0, alpha: 0 }
     }
@@ -105,7 +110,7 @@ async function buildBrandedImage(id) {
 
   await sharp(input)
     .ensureAlpha()
-    .composite([{ input: clippedLabel }])
+    .composite([{ input: labelCanvas }])
     .png({ compressionLevel: 9 })
     .toFile(output);
 
@@ -113,8 +118,7 @@ async function buildBrandedImage(id) {
 }
 
 (async () => {
-  const ids = Object.keys(labelY);
-  for (const id of ids) await buildBrandedImage(id);
+  for (const id of Object.keys(labelY)) await buildBrandedImage(id);
   console.log("CleanEdge branded Shield PNGs rebuilt with small fitted labels.");
 })().catch((error) => {
   console.error(error);
