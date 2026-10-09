@@ -24,7 +24,7 @@ SOURCES = {
 def remove_white_background(image):
     rgb = np.asarray(image.convert("RGB"))
     # White/near-white connected to the canvas edges is background, not product.
-    near_white = ((rgb.min(axis=2) > 218) & ((rgb.max(axis=2) - rgb.min(axis=2)) < 42)).astype(np.uint8)
+    near_white = ((rgb.min(axis=2) > 198) & ((rgb.max(axis=2) - rgb.min(axis=2)) < 62)).astype(np.uint8)
     count, labels = cv2.connectedComponents(near_white, connectivity=8)
     edge_labels = set(np.unique(np.concatenate([labels[0, :], labels[-1, :], labels[:, 0], labels[:, -1]])).tolist())
     bg = np.isin(labels, list(edge_labels)) & (labels != 0)
