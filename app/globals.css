@@ -338,3 +338,19 @@ body {
   -webkit-text-stroke: 0 transparent !important;
   filter: none !important;
 }
+
+
+/* CleanEdge overlay removal: keep product photography unobstructed. */
+.productSticker,
+.productStickerOnItem,
+.productStickerBundleOnItem,
+.productStickerDetail,
+.productStickerBundle,
+.photoHint,
+[class*="StickerOnItem"],
+[class*="stickerOverlay"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
