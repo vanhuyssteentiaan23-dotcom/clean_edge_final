@@ -24,7 +24,7 @@ SOURCES = {
 def remove_white_background(image):
     rgb = np.asarray(image.convert("RGB"))
     # White/near-white connected to the canvas edges is background, not product.
-    near_white = ((rgb.min(axis=2) > 198) & ((rgb.max(axis=2) - rgb.min(axis=2)) < 62)).astype(np.uint8)
+    near_white = ((rgb.min(axis=2) > 218) & ((rgb.max(axis=2) - rgb.min(axis=2)) < 42)).astype(np.uint8)
     count, labels = cv2.connectedComponents(near_white, connectivity=8)
     edge_labels = set(np.unique(np.concatenate([labels[0, :], labels[-1, :], labels[:, 0], labels[:, -1]])).tolist())
     bg = np.isin(labels, list(edge_labels)) & (labels != 0)
@@ -58,6 +58,13 @@ for filename, (url, crop) in SOURCES.items():
     source = Image.open(BytesIO(response.content)).convert("RGB")
     if crop:
         source = source.crop(crop)
+        # The catalogue photo joins three Jetwasher colour options with one shared yellow applicator.
+        # Keep a single red bottle and remove the shared yellow cross-piece above the bottle.
+        arr = np.asarray(source).copy()
+        yy, xx = np.indices(arr.shape[:2])
+        yellow_applicator = (yy < 190) & (arr[:, :, 0] > 170) & (arr[:, :, 1] > 120) & (arr[:, :, 2] < 110)
+        arr[yellow_applicator] = [255, 255, 255]
+        source = Image.fromarray(arr, "RGB")
     result = trim_and_square(remove_white_background(source))
     result.save(OUT / filename, format="PNG", optimize=True)
     print("Wrote", OUT / filename, (OUT / filename).stat().st_size, "bytes")
