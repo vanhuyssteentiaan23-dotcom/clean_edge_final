@@ -18,7 +18,7 @@ SOURCES = {
     "shield-xtreme-shampoo-500ml.png": ("https://www.shopshield.co.za/cdn/shop/files/PHOTO-2024-05-23-17-51-12.jpg?v=1716479654&width=1946", None),
     "shield-engine-cleaner-500ml.png": ("https://www.shopshield.co.za/cdn/shop/files/90E6F6DC-2C8D-4710-AC2D-F2C8E36776E7.png?v=1716564545&width=1946", None),
     # Official photo shows three colour options; crop the first bottle so the listing represents one unit.
-    "shield-jetwasher-1l.png": ("https://www.shopshield.co.za/cdn/shop/files/C7683177-4C18-4C04-BDC6-91CE4610764F.png?v=1716542047&width=1946", (100, 140, 390, 850)),
+    "shield-jetwasher-1l.png": ("https://www.shopshield.co.za/cdn/shop/files/C7683177-4C18-4C04-BDC6-91CE4610764F.png?v=1716542047&width=1000", (100, 140, 390, 850)),
 }
 
 def remove_white_background(image):
