@@ -313,3 +313,28 @@
   display: none !important;
   content: none !important;
 }
+
+/* FIX: remove the red/blue ghosting from storefront typography. */
+.card h3,
+.card .qty,
+.card .price,
+.card .add,
+.productInfo h1,
+.productInfo .productDescription,
+.productInfo .productPrice,
+body {
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 transparent !important;
+  filter: none !important;
+}
+.card h3 *,
+.card .qty *,
+.card .price *,
+.card .add *,
+.productInfo h1 *,
+.productInfo .productDescription *,
+.productInfo .productPrice * {
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 transparent !important;
+  filter: none !important;
+}
