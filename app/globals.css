@@ -304,3 +304,12 @@
 
 /* Product cards: no image hover overlay. */
 .photoHint{display:none !important;}
+
+
+/* FIX: remove the unwanted CleanEdge product-image stickers site-wide; keep product photography untouched. */
+.productSticker,
+.productStickerBundle,
+.productStickerOnItem {
+  display: none !important;
+  content: none !important;
+}
