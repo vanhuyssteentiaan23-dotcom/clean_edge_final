@@ -23,19 +23,36 @@ SOURCES = {
 
 def remove_white_background(image):
     rgb = np.asarray(image.convert("RGB"))
-    # White/near-white connected to the canvas edges is background, not product.
-    near_white = ((rgb.min(axis=2) > 218) & ((rgb.max(axis=2) - rgb.min(axis=2)) < 42)).astype(np.uint8)
-    count, labels = cv2.connectedComponents(near_white, connectivity=8)
-    edge_labels = set(np.unique(np.concatenate([labels[0, :], labels[-1, :], labels[:, 0], labels[:, -1]])).tolist())
-    bg = np.isin(labels, list(edge_labels)) & (labels != 0)
-    alpha = np.where(bg, 0, 255).astype(np.uint8)
-    # Soften the cut edge and remove white spill around the silhouette.
-    near_edge = cv2.dilate(bg.astype(np.uint8), np.ones((3, 3), np.uint8), iterations=1).astype(bool) & ~bg
-    if near_edge.any():
-        pix = rgb.astype(np.float32)
-        # Decontaminate edge pixels against the known white studio background.
-        pix[near_edge] = np.clip((pix[near_edge] - 255.0 * 0.12) / 0.88, 0, 255)
-        rgb = pix.astype(np.uint8)
+    # Start with pixels that are meaningfully different from the white studio backdrop.
+    # Close small gaps along product edges, then fill the external silhouette so white
+    # bottle handles, labels and caps are kept instead of being mistaken for background.
+    minc = rgb.min(axis=2).astype(np.int16)
+    maxc = rgb.max(axis=2).astype(np.int16)
+    chroma = maxc - minc
+    foreground_hint = ((minc < 242) | (chroma > 18)).astype(np.uint8)
+
+    # Keep the dominant object and bridge tiny breaks caused by white plastic on white.
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (11, 11))
+    closed = cv2.morphologyEx(foreground_hint, cv2.MORPH_CLOSE, kernel, iterations=2)
+    closed = cv2.morphologyEx(closed, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8), iterations=1)
+    count, labels, stats, _ = cv2.connectedComponentsWithStats(closed, connectivity=8)
+    if count <= 1:
+        raise RuntimeError("could not detect product silhouette")
+    candidates = [(stats[i, cv2.CC_STAT_AREA], i) for i in range(1, count)
+                  if stats[i, cv2.CC_STAT_AREA] > 0]
+    _, main_label = max(candidates)
+    silhouette = (labels == main_label).astype(np.uint8)
+
+    # Fill enclosed light areas (notably white handles and white bottle bodies).
+    contours, _ = cv2.findContours(silhouette, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not contours:
+        raise RuntimeError("could not trace product silhouette")
+    mask = np.zeros(silhouette.shape, dtype=np.uint8)
+    cv2.drawContours(mask, [max(contours, key=cv2.contourArea)], -1, 255, thickness=cv2.FILLED)
+
+    # Smooth only the alpha edge slightly; keep original product colours intact.
+    mask = cv2.GaussianBlur(mask, (3, 3), 0.6)
+    alpha = mask
     rgba = np.dstack([rgb, alpha])
     return Image.fromarray(rgba, "RGBA")
 
